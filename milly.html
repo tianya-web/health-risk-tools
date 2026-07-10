@@ -37,23 +37,59 @@
 
 <style>
 
-  /* ── 響應式強化：避免手機橫向溢出 ───────────── */
-  html { -webkit-text-size-adjust: 100%; overflow-x: hidden; }
-  body { overflow-x: hidden; min-width: 0; }
-  @media (max-width: 560px) {
-    .wrap { padding: 0 14px 48px; }
-    header.site { padding: 12px 14px; }
-    .header-note { display: none; }
-    .hero { padding: 28px 0 4px; }
-    .form-panel, .detail, .std-panel { padding-left: 16px; padding-right: 16px; }
-    .summary-grid { padding: 16px; gap: 8px; }
-    /* 三欄血脂等在極窄螢幕改為單欄，避免輸入框過窄 */
-    .frow { flex-wrap: wrap; }
-    .frow > * { flex: 1 1 100%; }
-    .frow > .field { flex: 1 1 100%; }
-  }
-  :root {
-    --green: #189A8F;
+  
+/* ── 響應式強化：避免手機橫向溢出 ───────────── */
+
+#millyHraApp {
+-webkit-text-size-adjust: 100%; overflow-x: hidden;
+}
+
+#millyHraApp {
+overflow-x: hidden; min-width: 0;
+}
+
+@media (max-width: 560px) {
+#millyHraApp .wrap {
+padding: 0 14px 48px;
+}
+
+#millyHraApp header.site {
+padding: 12px 14px;
+}
+
+#millyHraApp .header-note {
+display: none;
+}
+
+#millyHraApp .hero {
+padding: 28px 0 4px;
+}
+
+#millyHraApp .form-panel, #millyHraApp .detail, #millyHraApp .std-panel {
+padding-left: 16px; padding-right: 16px;
+}
+
+#millyHraApp .summary-grid {
+padding: 16px; gap: 8px;
+}
+
+/* 三欄血脂等在極窄螢幕改為單欄，避免輸入框過窄 */
+
+#millyHraApp .frow {
+flex-wrap: wrap;
+}
+
+#millyHraApp .frow > * {
+flex: 1 1 100%;
+}
+
+#millyHraApp .frow > .field {
+flex: 1 1 100%;
+}
+}
+
+#millyHraApp {
+--green: #189A8F;
     --green-deep: #0F6B63;
     --green-soft: #E0F3F1;
     --orange: #B98A3E;
@@ -72,10 +108,11 @@
     --risk-high: #D64545;
     --risk-high-bg: #FBE5E5;
     --shadow: 0 1px 3px rgba(22,48,45,.08), 0 8px 24px rgba(22,48,45,.06);
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --green: #5BC4BA;
+}
+
+@media (prefers-color-scheme: dark) {
+#millyHraApp {
+--green: #5BC4BA;
       --green-deep: #8ADCD3;
       --green-soft: #14332F;
       --orange: #D4A855;
@@ -94,10 +131,11 @@
       --risk-high: #E86B6B;
       --risk-high-bg: #3B2020;
       --shadow: 0 1px 3px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
-    }
-  }
-  :root[data-theme="light"] {
-    --green: #189A8F; --green-deep: #0F6B63; --green-soft: #E0F3F1;
+}
+}
+
+#millyHraApp[data-theme="light"] {
+--green: #189A8F; --green-deep: #0F6B63; --green-soft: #E0F3F1;
     --orange: #B98A3E; --orange-soft: #F7EFE0; --yellow: #81D8D0;
     --ink: #16302D; --ink-2: #4A6360; --ink-3: #7A918D;
     --ground: #F4FAF9; --card: #FFFFFF; --line: #D7E6E3;
@@ -105,9 +143,10 @@
     --risk-mid: #C98A06; --risk-mid-bg: #FBF0D7;
     --risk-high: #D64545; --risk-high-bg: #FBE5E5;
     --shadow: 0 1px 3px rgba(22,48,45,.08), 0 8px 24px rgba(22,48,45,.06);
-  }
-  :root[data-theme="dark"] {
-    --green: #5BC4BA; --green-deep: #8ADCD3; --green-soft: #14332F;
+}
+
+#millyHraApp[data-theme="dark"] {
+--green: #5BC4BA; --green-deep: #8ADCD3; --green-soft: #14332F;
     --orange: #D4A855; --orange-soft: #37301E; --yellow: #6FC7C0;
     --ink: #E5F0EE; --ink-2: #A3BBB6; --ink-3: #7A918D;
     --ground: #0E1716; --card: #17221F; --line: #29423E;
@@ -115,116 +154,168 @@
     --risk-mid: #E0AE45; --risk-mid-bg: #362B14;
     --risk-high: #E86B6B; --risk-high-bg: #3B2020;
     --shadow: 0 1px 3px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
-  }
+}
 
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
+#millyHraApp * {
+box-sizing: border-box;
+}
+
+#millyHraApp {
+margin: 0;
     background: var(--ground);
     color: var(--ink);
     font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", "Segoe UI", system-ui, sans-serif;
     line-height: 1.65;
     -webkit-font-smoothing: antialiased;
-  }
+}
 
-  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px 64px; }
+#millyHraApp .wrap {
+max-width: 1120px; margin: 0 auto; padding: 0 20px 64px;
+}
 
-  /* ── 頁首 ─────────────────────────── */
-  header.site {
-    background: var(--card);
+/* ── 頁首 ─────────────────────────── */
+
+#millyHraApp header.site {
+background: var(--card);
     border-bottom: 3px solid var(--green);
     padding: 14px 20px;
     display: flex; align-items: center; gap: 14px;
     flex-wrap: wrap;
-  }
-  .logo-img {
-    height: 44px; width: auto; display: block;
-    background: #fff; border-radius: 8px; padding: 4px 8px;
-  }
-  .brand-tag { font-size: 12.5px; color: var(--ink-2); letter-spacing: .06em; }
-  header.site .spacer { flex: 1; }
-  .header-note {
-    font-size: 12px; color: var(--ink-3);
-    text-align: right;
-  }
+}
 
-  .hero {
-    padding: 40px 0 8px;
-  }
-  .hero .eyebrow {
-    display: inline-block;
+#millyHraApp .logo-img {
+height: 44px; width: auto; display: block;
+    background: #fff; border-radius: 8px; padding: 4px 8px;
+}
+
+#millyHraApp .brand-tag {
+font-size: 12.5px; color: var(--ink-2); letter-spacing: .06em;
+}
+
+#millyHraApp header.site .spacer {
+flex: 1;
+}
+
+#millyHraApp .header-note {
+font-size: 12px; color: var(--ink-3);
+    text-align: right;
+}
+
+#millyHraApp .hero {
+padding: 40px 0 8px;
+}
+
+#millyHraApp .hero .eyebrow {
+display: inline-block;
     font-size: 12.5px; font-weight: 700; letter-spacing: .14em;
     color: var(--green);
     background: var(--green-soft);
     padding: 4px 12px; border-radius: 999px;
     margin-bottom: 14px;
-  }
-  .hero h1 {
-    margin: 0 0 10px;
+}
+
+#millyHraApp .hero h1 {
+margin: 0 0 10px;
     font-size: clamp(26px, 4vw, 36px);
     font-weight: 800;
     letter-spacing: .01em;
     text-wrap: balance;
     line-height: 1.3;
-  }
-  .hero h1 em { font-style: normal; color: var(--green); }
-  .hero p.lede {
-    margin: 0; max-width: 40em;
-    color: var(--ink-2); font-size: 15.5px;
-  }
+}
 
-  /* ── 主版面 ─────────────────────────── */
-  .layout {
-    display: grid;
+#millyHraApp .hero h1 em {
+font-style: normal; color: var(--green);
+}
+
+#millyHraApp .hero p.lede {
+margin: 0; max-width: 40em;
+    color: var(--ink-2); font-size: 15.5px;
+}
+
+/* ── 主版面 ─────────────────────────── */
+
+#millyHraApp .layout {
+display: grid;
     grid-template-columns: 380px 1fr;
     gap: 24px;
     margin-top: 28px;
     align-items: start;
-  }
-  .form-panel { position: sticky; top: 16px; }
-  @media (max-width: 900px) {
-    .layout { grid-template-columns: 1fr; }
-    .form-panel { position: static; }
-  }
+}
 
-  .panel {
-    background: var(--card);
+#millyHraApp .form-panel {
+position: sticky; top: 16px;
+}
+
+@media (max-width: 900px) {
+#millyHraApp .layout {
+grid-template-columns: 1fr;
+}
+
+#millyHraApp .form-panel {
+position: static;
+}
+}
+
+#millyHraApp .panel {
+background: var(--card);
     border: 1px solid var(--line);
     border-radius: 16px;
     box-shadow: var(--shadow);
-  }
+}
 
-  /* ── 表單 ─────────────────────────── */
-  .form-panel { padding: 24px; }
-  .form-panel h2 {
-    margin: 0 0 4px; font-size: 18px; font-weight: 700;
-  }
-  .form-panel .hint { font-size: 13px; color: var(--ink-2); margin: 0 0 18px; }
+/* ── 表單 ─────────────────────────── */
 
-  .fgroup { margin-bottom: 16px; }
-  .fgroup > label.glabel {
-    display: block; font-size: 13px; font-weight: 700;
+#millyHraApp .form-panel {
+padding: 24px;
+}
+
+#millyHraApp .form-panel h2 {
+margin: 0 0 4px; font-size: 18px; font-weight: 700;
+}
+
+#millyHraApp .form-panel .hint {
+font-size: 13px; color: var(--ink-2); margin: 0 0 18px;
+}
+
+#millyHraApp .fgroup {
+margin-bottom: 16px;
+}
+
+#millyHraApp .fgroup > label.glabel {
+display: block; font-size: 13px; font-weight: 700;
     color: var(--ink-2); margin-bottom: 6px;
     letter-spacing: .04em;
-  }
-  .frow { display: flex; gap: 10px; }
-  .frow > * { flex: 1; min-width: 0; }
+}
 
-  .field { position: relative; }
-  /* 輸入框＋單位：左右兩格各自獨立，數字永不與單位重疊 */
-  .ibox {
-    display: flex; align-items: center;
+#millyHraApp .frow {
+display: flex; gap: 10px;
+}
+
+#millyHraApp .frow > * {
+flex: 1; min-width: 0;
+}
+
+#millyHraApp .field {
+position: relative;
+}
+
+/* 輸入框＋單位：左右兩格各自獨立，數字永不與單位重疊 */
+
+#millyHraApp .ibox {
+display: flex; align-items: center;
     border: 1.5px solid var(--line);
     border-radius: 10px;
     background: var(--ground);
-  }
-  .ibox:focus-within {
-    outline: 2px solid var(--green);
+}
+
+#millyHraApp .ibox:focus-within {
+outline: 2px solid var(--green);
     outline-offset: 1px;
     border-color: var(--green);
-  }
-  .field input[type="number"] {
-    flex: 1; min-width: 0;
+}
+
+#millyHraApp .field input[type="number"] {
+flex: 1; min-width: 0;
     width: 100%;
     padding: 10px 4px 10px 12px;
     font-size: 15px;
@@ -235,75 +326,103 @@
     font-family: inherit;
     appearance: textfield;
     -moz-appearance: textfield;
-  }
-  .field input[type="number"]:focus { outline: none; }
-  /* 隱藏數字欄位的上下調整箭頭 */
-  .field input[type="number"]::-webkit-inner-spin-button,
-  .field input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
+}
+
+#millyHraApp .field input[type="number"]:focus {
+outline: none;
+}
+
+/* 隱藏數字欄位的上下調整箭頭 */
+
+#millyHraApp .field input[type="number"]::-webkit-inner-spin-button, #millyHraApp .field input[type="number"]::-webkit-outer-spin-button {
+-webkit-appearance: none;
     margin: 0;
-  }
-  .field .unit {
-    flex: none;
+}
+
+#millyHraApp .field .unit {
+flex: none;
     padding-right: 10px;
     font-size: 11.5px; color: var(--ink-3);
     pointer-events: none;
     user-select: none;
-  }
-  @media (max-width: 900px) {
-    /* 16px 以上可避免 iOS 點輸入框時自動縮放頁面 */
-    .field input[type="number"] { font-size: 16px; }
-  }
-  .flabel {
-    display: block;
+}
+
+@media (max-width: 900px) {
+/* 16px 以上可避免 iOS 點輸入框時自動縮放頁面 */
+
+#millyHraApp .field input[type="number"] {
+font-size: 16px;
+}
+}
+
+#millyHraApp .flabel {
+display: block;
     min-height: 34px;   /* 兩行高度：欄位名＋標準值，讓同列輸入框對齊 */
     font-size: 12.5px; color: var(--ink-2);
     line-height: 1.35;
     margin-bottom: 4px;
-  }
-  .flabel .std {
-    display: block;
+}
+
+#millyHraApp .flabel .std {
+display: block;
     font-style: normal; color: var(--green);
     font-size: 11px; font-weight: 600;
     white-space: nowrap;
-  }
+}
 
-  .seg {
-    display: flex; border: 1.5px solid var(--line);
+#millyHraApp .seg {
+display: flex; border: 1.5px solid var(--line);
     border-radius: 10px; overflow: hidden;
-  }
-  .seg label {
-    flex: 1; text-align: center; padding: 9px 0;
+}
+
+#millyHraApp .seg label {
+flex: 1; text-align: center; padding: 9px 0;
     font-size: 14px; cursor: pointer; color: var(--ink-2);
     background: var(--ground);
     user-select: none;
-  }
-  .seg input { position: absolute; opacity: 0; }
-  .seg input:checked + label {
-    background: var(--green); color: #fff; font-weight: 700;
-  }
-  .seg input:focus-visible + label { outline: 2px solid var(--orange); outline-offset: -2px; }
+}
 
-  .chk-list { display: flex; flex-direction: column; gap: 8px; }
-  .chk {
-    display: flex; align-items: center; gap: 10px;
+#millyHraApp .seg input {
+position: absolute; opacity: 0;
+}
+
+#millyHraApp .seg input:checked + label {
+background: var(--green); color: #fff; font-weight: 700;
+}
+
+#millyHraApp .seg input:focus-visible + label {
+outline: 2px solid var(--orange); outline-offset: -2px;
+}
+
+#millyHraApp .chk-list {
+display: flex; flex-direction: column; gap: 8px;
+}
+
+#millyHraApp .chk {
+display: flex; align-items: center; gap: 10px;
     padding: 9px 12px;
     border: 1.5px solid var(--line); border-radius: 10px;
     background: var(--ground);
     font-size: 14px; cursor: pointer;
-  }
-  .chk input { width: 17px; height: 17px; accent-color: var(--green); margin: 0; }
-  .chk:has(input:checked) { border-color: var(--green); background: var(--green-soft); }
+}
 
-  .bmi-note {
-    font-size: 12.5px; color: var(--ink-2);
+#millyHraApp .chk input {
+width: 17px; height: 17px; accent-color: var(--green); margin: 0;
+}
+
+#millyHraApp .chk:has(input:checked) {
+border-color: var(--green); background: var(--green-soft);
+}
+
+#millyHraApp .bmi-note {
+font-size: 12.5px; color: var(--ink-2);
     background: var(--green-soft);
     border-radius: 8px; padding: 6px 10px; margin-top: 8px;
     font-variant-numeric: tabular-nums;
-  }
+}
 
-  button.calc {
-    width: 100%;
+#millyHraApp button.calc {
+width: 100%;
     margin-top: 6px;
     padding: 14px;
     font-size: 16px; font-weight: 700; letter-spacing: .08em;
@@ -313,63 +432,90 @@
     border: none; border-radius: 12px;
     cursor: pointer;
     transition: filter .15s;
-  }
-  button.calc:hover { filter: brightness(1.07); }
-  button.calc:focus-visible { outline: 3px solid var(--green); outline-offset: 2px; }
-  .form-err {
-    display: none;
+}
+
+#millyHraApp button.calc:hover {
+filter: brightness(1.07);
+}
+
+#millyHraApp button.calc:focus-visible {
+outline: 3px solid var(--green); outline-offset: 2px;
+}
+
+#millyHraApp .form-err {
+display: none;
     margin-top: 10px; padding: 9px 12px;
     font-size: 13.5px;
     color: var(--risk-high);
     background: var(--risk-high-bg);
     border-radius: 8px;
-  }
-  .form-err.show { display: block; }
+}
 
-  /* ── 結果區 ─────────────────────────── */
-  .results { display: flex; flex-direction: column; gap: 20px; }
+#millyHraApp .form-err.show {
+display: block;
+}
 
-  .placeholder {
-    padding: 48px 32px;
+/* ── 結果區 ─────────────────────────── */
+
+#millyHraApp .results {
+display: flex; flex-direction: column; gap: 20px;
+}
+
+#millyHraApp .placeholder {
+padding: 48px 32px;
     min-height: 340px;
     display: grid; place-content: center; justify-items: center;
     text-align: center;
     color: var(--ink-2);
-  }
-  .ph-icon {
-    width: 72px; height: 72px; border-radius: 50%;
+}
+
+#millyHraApp .ph-icon {
+width: 72px; height: 72px; border-radius: 50%;
     background: var(--green-soft);
     display: grid; place-items: center;
     margin-bottom: 18px;
-  }
-  .ph-icon svg { display: block; }
-  .placeholder h2 { margin: 0 0 6px; font-size: 17px; font-weight: 700; color: var(--ink); }
-  .placeholder .ph-sub { margin: 0 0 22px; font-size: 14px; }
-  .ph-steps {
-    display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
-  }
-  .ph-step {
-    display: flex; align-items: center; gap: 8px;
+}
+
+#millyHraApp .ph-icon svg {
+display: block;
+}
+
+#millyHraApp .placeholder h2 {
+margin: 0 0 6px; font-size: 17px; font-weight: 700; color: var(--ink);
+}
+
+#millyHraApp .placeholder .ph-sub {
+margin: 0 0 22px; font-size: 14px;
+}
+
+#millyHraApp .ph-steps {
+display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+}
+
+#millyHraApp .ph-step {
+display: flex; align-items: center; gap: 8px;
     font-size: 13px; color: var(--ink-2);
     background: var(--ground);
     border: 1px solid var(--line);
     border-radius: 999px;
     padding: 7px 14px 7px 8px;
-  }
-  .ph-step .n {
-    width: 20px; height: 20px; border-radius: 50%;
+}
+
+#millyHraApp .ph-step .n {
+width: 20px; height: 20px; border-radius: 50%;
     background: var(--green); color: #fff;
     display: grid; place-items: center;
     font-size: 11.5px; font-weight: 700;
     flex: none;
-  }
+}
 
-  .tabs {
-    display: flex; gap: 8px; flex-wrap: wrap;
+#millyHraApp .tabs {
+display: flex; gap: 8px; flex-wrap: wrap;
     padding: 14px 18px 0;
-  }
-  .tab-btn {
-    padding: 8px 16px;
+}
+
+#millyHraApp .tab-btn {
+padding: 8px 16px;
     font-size: 14px; font-weight: 600;
     font-family: inherit;
     color: var(--ink-2);
@@ -377,21 +523,26 @@
     border: 1.5px solid var(--line);
     border-radius: 999px;
     cursor: pointer;
-  }
-  .tab-btn[aria-selected="true"] {
-    background: var(--green); color: #fff; border-color: var(--green);
-  }
-  .tab-btn:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+}
 
-  .summary-grid {
-    display: grid;
+#millyHraApp .tab-btn[aria-selected="true"] {
+background: var(--green); color: #fff; border-color: var(--green);
+}
+
+#millyHraApp .tab-btn:focus-visible {
+outline: 2px solid var(--orange); outline-offset: 2px;
+}
+
+#millyHraApp .summary-grid {
+display: grid;
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     gap: 10px;
     padding: 20px 24px;
     border-bottom: 1px solid var(--line);
-  }
-  .sum-card {
-    border: 1.5px solid var(--line);
+}
+
+#millyHraApp .sum-card {
+border: 1.5px solid var(--line);
     border-radius: 12px;
     padding: 12px 12px 11px;
     cursor: pointer;
@@ -399,167 +550,325 @@
     transition: border-color .15s;
     display: flex; flex-direction: column; gap: 8px;
     align-items: flex-start; justify-content: space-between;
-  }
-  .sum-card:hover { border-color: var(--green); }
-  .sum-card.active { border-color: var(--green); box-shadow: inset 0 0 0 1px var(--green); }
-  .sum-card .dname { font-size: 13.5px; font-weight: 700; line-height: 1.35; }
-  .sum-card .den { display: block; font-size: 10.5px; font-weight: 400; color: var(--ink-3); letter-spacing: .04em; }
-  .light {
-    display: inline-flex; align-items: center; gap: 6px;
+}
+
+#millyHraApp .sum-card:hover {
+border-color: var(--green);
+}
+
+#millyHraApp .sum-card.active {
+border-color: var(--green); box-shadow: inset 0 0 0 1px var(--green);
+}
+
+#millyHraApp .sum-card .dname {
+font-size: 13.5px; font-weight: 700; line-height: 1.35;
+}
+
+#millyHraApp .sum-card .den {
+display: block; font-size: 10.5px; font-weight: 400; color: var(--ink-3); letter-spacing: .04em;
+}
+
+#millyHraApp .light {
+display: inline-flex; align-items: center; gap: 6px;
     font-size: 12.5px; font-weight: 700;
     padding: 3px 10px; border-radius: 999px;
     white-space: nowrap;   /* 燈號文字不斷行 */
-  }
-  .light .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
-  .light.low  { color: var(--risk-low);  background: var(--risk-low-bg); }
-  .light.low .dot  { background: var(--risk-low); }
-  .light.mid  { color: var(--risk-mid);  background: var(--risk-mid-bg); }
-  .light.mid .dot  { background: var(--risk-mid); }
-  .light.high { color: var(--risk-high); background: var(--risk-high-bg); }
-  .light.high .dot { background: var(--risk-high); }
-  .light.na   { color: var(--ink-3); background: var(--ground); border: 1px solid var(--line); }
-  .light.na .dot { background: var(--ink-3); }
+}
 
-  .detail { padding: 6px 24px 26px; }
-  .detail h3 {
-    font-size: 20px; font-weight: 800; margin: 14px 0 2px;
-  }
-  .detail .dsub { font-size: 13px; color: var(--ink-3); margin: 0 0 16px; }
+#millyHraApp .light .dot {
+width: 9px; height: 9px; border-radius: 50%; flex: none;
+}
 
-  .meter-row { display: flex; align-items: center; gap: 14px; margin: 6px 0 4px; flex-wrap: wrap; }
-  .meter {
-    flex: 1; min-width: 220px;
+#millyHraApp .light.low {
+color: var(--risk-low);  background: var(--risk-low-bg);
+}
+
+#millyHraApp .light.low .dot {
+background: var(--risk-low);
+}
+
+#millyHraApp .light.mid {
+color: var(--risk-mid);  background: var(--risk-mid-bg);
+}
+
+#millyHraApp .light.mid .dot {
+background: var(--risk-mid);
+}
+
+#millyHraApp .light.high {
+color: var(--risk-high); background: var(--risk-high-bg);
+}
+
+#millyHraApp .light.high .dot {
+background: var(--risk-high);
+}
+
+#millyHraApp .light.na {
+color: var(--ink-3); background: var(--ground); border: 1px solid var(--line);
+}
+
+#millyHraApp .light.na .dot {
+background: var(--ink-3);
+}
+
+#millyHraApp .detail {
+padding: 6px 24px 26px;
+}
+
+#millyHraApp .detail h3 {
+font-size: 20px; font-weight: 800; margin: 14px 0 2px;
+}
+
+#millyHraApp .detail .dsub {
+font-size: 13px; color: var(--ink-3); margin: 0 0 16px;
+}
+
+#millyHraApp .meter-row {
+display: flex; align-items: center; gap: 14px; margin: 6px 0 4px; flex-wrap: wrap;
+}
+
+#millyHraApp .meter {
+flex: 1; min-width: 220px;
     height: 14px; border-radius: 999px;
     background: linear-gradient(90deg, var(--risk-low-bg), var(--risk-mid-bg) 55%, var(--risk-high-bg));
     position: relative;
     border: 1px solid var(--line);
-  }
-  .meter .fill {
-    position: absolute; inset: 0 auto 0 0;
+}
+
+#millyHraApp .meter .fill {
+position: absolute; inset: 0 auto 0 0;
     border-radius: 999px;
     transition: width .5s ease;
-  }
-  .meter .fill.low  { background: var(--risk-low); }
-  .meter .fill.mid  { background: var(--risk-mid); }
-  .meter .fill.high { background: var(--risk-high); }
-  .meter-pct {
-    font-size: 26px; font-weight: 800;
+}
+
+#millyHraApp .meter .fill.low {
+background: var(--risk-low);
+}
+
+#millyHraApp .meter .fill.mid {
+background: var(--risk-mid);
+}
+
+#millyHraApp .meter .fill.high {
+background: var(--risk-high);
+}
+
+#millyHraApp .meter-pct {
+font-size: 26px; font-weight: 800;
     font-variant-numeric: tabular-nums;
     min-width: 3.2em;
-  }
-  .meter-pct small { font-size: 13px; font-weight: 600; color: var(--ink-3); }
-  .meter-cap { font-size: 12.5px; color: var(--ink-3); margin: 2px 0 18px; }
+}
 
-  .factors h4, .advice h4 {
-    font-size: 14px; font-weight: 700; letter-spacing: .08em;
+#millyHraApp .meter-pct small {
+font-size: 13px; font-weight: 600; color: var(--ink-3);
+}
+
+#millyHraApp .meter-cap {
+font-size: 12.5px; color: var(--ink-3); margin: 2px 0 18px;
+}
+
+#millyHraApp .factors h4, #millyHraApp .advice h4 {
+font-size: 14px; font-weight: 700; letter-spacing: .08em;
     color: var(--green);
     margin: 20px 0 10px;
     text-transform: uppercase;
-  }
-  .factor {
-    display: flex; justify-content: space-between; gap: 12px;
+}
+
+#millyHraApp .factor {
+display: flex; justify-content: space-between; gap: 12px;
     padding: 8px 0;
     border-bottom: 1px dashed var(--line);
     font-size: 14px;
-  }
-  .factor:last-child { border-bottom: none; }
-  .factor .fv { font-variant-numeric: tabular-nums; font-weight: 600; }
-  .factor .fv.warn { color: var(--risk-mid); }
-  .factor .fv.bad  { color: var(--risk-high); }
-  .factor .fv.ok   { color: var(--risk-low); }
+}
 
-  .advice ul { margin: 0; padding-left: 20px; font-size: 14.5px; color: var(--ink-2); }
-  .advice li { margin-bottom: 6px; }
-  .advice li strong { color: var(--ink); }
+#millyHraApp .factor:last-child {
+border-bottom: none;
+}
 
-  .adv-item {
-    border-left: 3px solid var(--yellow);
+#millyHraApp .factor .fv {
+font-variant-numeric: tabular-nums; font-weight: 600;
+}
+
+#millyHraApp .factor .fv.warn {
+color: var(--risk-mid);
+}
+
+#millyHraApp .factor .fv.bad {
+color: var(--risk-high);
+}
+
+#millyHraApp .factor .fv.ok {
+color: var(--risk-low);
+}
+
+#millyHraApp .advice ul {
+margin: 0; padding-left: 20px; font-size: 14.5px; color: var(--ink-2);
+}
+
+#millyHraApp .advice li {
+margin-bottom: 6px;
+}
+
+#millyHraApp .advice li strong {
+color: var(--ink);
+}
+
+#millyHraApp .adv-item {
+border-left: 3px solid var(--yellow);
     background: var(--ground);
     border-radius: 0 10px 10px 0;
     padding: 12px 14px;
     margin-bottom: 10px;
     font-size: 14px;
-  }
-  .adv-item .t { font-weight: 700; margin-bottom: 3px; }
-  .adv-item .t .tv { color: var(--risk-high); }
-  .adv-item .life { color: var(--ink-2); margin-bottom: 6px; }
-  .adv-item .ing {
-    font-size: 13px; color: var(--green-deep);
+}
+
+#millyHraApp .adv-item .t {
+font-weight: 700; margin-bottom: 3px;
+}
+
+#millyHraApp .adv-item .t .tv {
+color: var(--risk-high);
+}
+
+#millyHraApp .adv-item .life {
+color: var(--ink-2); margin-bottom: 6px;
+}
+
+#millyHraApp .adv-item .ing {
+font-size: 13px; color: var(--green-deep);
     background: var(--green-soft);
     border-radius: 7px; padding: 5px 10px;
     display: inline-block;
-  }
-  .adv-item.good { border-left-color: var(--risk-low); }
-  .adv-base {
-    font-size: 14px; color: var(--ink-2);
+}
+
+#millyHraApp .adv-item.good {
+border-left-color: var(--risk-low);
+}
+
+#millyHraApp .adv-base {
+font-size: 14px; color: var(--ink-2);
     padding: 10px 14px; margin-bottom: 10px;
     background: var(--ground); border-radius: 10px;
-  }
-  .adv-note {
-    font-size: 12px; color: var(--ink-3); margin-top: 12px;
-  }
-  .pharm-line {
-    display: flex; gap: 10px; align-items: flex-start;
+}
+
+#millyHraApp .adv-note {
+font-size: 12px; color: var(--ink-3); margin-top: 12px;
+}
+
+#millyHraApp .pharm-line {
+display: flex; gap: 10px; align-items: flex-start;
     margin-top: 14px; padding: 12px 14px;
     background: var(--orange-soft);
     border-radius: 10px;
     font-size: 13.5px; color: var(--ink-2);
-  }
-  .pharm-line .pb {
-    flex: none; width: 24px; height: 24px; border-radius: 50%;
+}
+
+#millyHraApp .pharm-line .pb {
+flex: none; width: 24px; height: 24px; border-radius: 50%;
     background: var(--orange); color: #fff;
     display: grid; place-items: center;
     font-size: 12px; font-weight: 800;
-  }
-  .pharm-line strong { color: var(--ink); }
+}
 
-  /* ── 標準值對照表 ─────────────────────────── */
-  .std-panel { padding: 22px 24px 24px; }
-  .std-panel h2 { margin: 0 0 4px; font-size: 18px; font-weight: 700; }
-  .std-panel .hint { font-size: 13px; color: var(--ink-2); margin: 0 0 14px; }
-  .std-scroll { overflow-x: auto; }
-  table.std-table {
-    width: 100%; border-collapse: collapse;
+#millyHraApp .pharm-line strong {
+color: var(--ink);
+}
+
+/* ── 標準值對照表 ─────────────────────────── */
+
+#millyHraApp .std-panel {
+padding: 22px 24px 24px;
+}
+
+#millyHraApp .std-panel h2 {
+margin: 0 0 4px; font-size: 18px; font-weight: 700;
+}
+
+#millyHraApp .std-panel .hint {
+font-size: 13px; color: var(--ink-2); margin: 0 0 14px;
+}
+
+#millyHraApp .std-scroll {
+overflow-x: auto;
+}
+
+#millyHraApp table.std-table {
+width: 100%; border-collapse: collapse;
     font-size: 14px; min-width: 480px;
-  }
-  .std-table th {
-    text-align: left; font-size: 12.5px; font-weight: 700;
+}
+
+#millyHraApp .std-table th {
+text-align: left; font-size: 12.5px; font-weight: 700;
     letter-spacing: .06em; color: var(--ink-2);
     padding: 8px 10px;
     border-bottom: 2px solid var(--line);
     white-space: nowrap;
-  }
-  .std-table td {
-    padding: 9px 10px;
+}
+
+#millyHraApp .std-table td {
+padding: 9px 10px;
     border-bottom: 1px solid var(--line);
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
-  }
-  .std-table tr:last-child td { border-bottom: none; }
-  .std-table td.val { font-weight: 700; }
-  .std-table td.val.over { color: var(--risk-high); }
-  .std-table td.std-v { color: var(--ink-2); }
-  .std-table td.note { color: var(--ink-3); font-size: 12px; white-space: normal; }
-  .badge {
-    display: inline-flex; align-items: center; gap: 5px;
+}
+
+#millyHraApp .std-table tr:last-child td {
+border-bottom: none;
+}
+
+#millyHraApp .std-table td.val {
+font-weight: 700;
+}
+
+#millyHraApp .std-table td.val.over {
+color: var(--risk-high);
+}
+
+#millyHraApp .std-table td.std-v {
+color: var(--ink-2);
+}
+
+#millyHraApp .std-table td.note {
+color: var(--ink-3); font-size: 12px; white-space: normal;
+}
+
+#millyHraApp .badge {
+display: inline-flex; align-items: center; gap: 5px;
     font-size: 12.5px; font-weight: 700;
     padding: 2px 10px; border-radius: 999px;
-  }
-  .badge.pass { color: var(--risk-low); background: var(--risk-low-bg); }
-  .badge.fail { color: var(--risk-high); background: var(--risk-high-bg); }
-  .badge.na   { color: var(--ink-3); background: var(--ground); border: 1px solid var(--line); }
-  .std-summary {
-    margin-top: 14px;
+}
+
+#millyHraApp .badge.pass {
+color: var(--risk-low); background: var(--risk-low-bg);
+}
+
+#millyHraApp .badge.fail {
+color: var(--risk-high); background: var(--risk-high-bg);
+}
+
+#millyHraApp .badge.na {
+color: var(--ink-3); background: var(--ground); border: 1px solid var(--line);
+}
+
+#millyHraApp .std-summary {
+margin-top: 14px;
     font-size: 13.5px; color: var(--ink-2);
     background: var(--green-soft);
     border-radius: 10px; padding: 10px 14px;
-  }
-  .std-summary strong { color: var(--green-deep); }
+}
 
-  /* ── LINE CTA ─────────────────────────── */
-  .line-cta { margin-top: 4px; text-align: center; }
-  .line-btn {
-    display: inline-flex; align-items: center; gap: 9px;
+#millyHraApp .std-summary strong {
+color: var(--green-deep);
+}
+
+/* ── LINE CTA ─────────────────────────── */
+
+#millyHraApp .line-cta {
+margin-top: 4px; text-align: center;
+}
+
+#millyHraApp .line-btn {
+display: inline-flex; align-items: center; gap: 9px;
     padding: 13px 32px;
     background: #06C755; color: #fff;
     font-weight: 700; font-size: 15.5px;
@@ -567,37 +876,358 @@
     letter-spacing: .05em;
     box-shadow: var(--shadow);
     transition: filter .15s;
-  }
-  .line-btn:hover { filter: brightness(1.06); }
-  .line-btn:focus-visible { outline: 3px solid var(--green); outline-offset: 2px; }
+}
 
-  /* ── 免責 ─────────────────────────── */
-  .disclaimer {
-    margin-top: 28px;
+#millyHraApp .line-btn:hover {
+filter: brightness(1.06);
+}
+
+#millyHraApp .line-btn:focus-visible {
+outline: 3px solid var(--green); outline-offset: 2px;
+}
+
+/* ── 免責 ─────────────────────────── */
+
+#millyHraApp .disclaimer {
+margin-top: 28px;
     font-size: 12.5px; color: var(--ink-3);
     border-top: 1px solid var(--line);
     padding-top: 16px;
-  }
-  .disclaimer strong { color: var(--ink-2); }
-  .disclaimer ol { padding-left: 18px; margin: 8px 0 0; }
-  .disclaimer li { margin-bottom: 4px; }
+}
 
-  footer.site {
-    margin-top: 8px;
+#millyHraApp .disclaimer strong {
+color: var(--ink-2);
+}
+
+#millyHraApp .disclaimer ol {
+padding-left: 18px; margin: 8px 0 0;
+}
+
+#millyHraApp .disclaimer li {
+margin-bottom: 4px;
+}
+
+#millyHraApp footer.site {
+margin-top: 8px;
     padding: 20px;
     text-align: center;
     font-size: 12.5px; color: var(--ink-3);
-  }
+}
 
-  @media (prefers-reduced-motion: reduce) {
-    .meter .fill { transition: none; }
+@media (prefers-reduced-motion: reduce) {
+#millyHraApp .meter .fill {
+transition: none;
+}
+}
+
+@media print {
+#millyHraApp header.site .header-note, #millyHraApp button.calc, #millyHraApp .pharm-cta a.btn {
+display: none;
+}
+
+#millyHraApp {
+background: #fff;
+}
+}
+
+/* ─────────────────────────────────────────────
+     手機嵌入官網防跑版修正版
+     重點：
+     1. 防止任何內容把 iframe 撐出螢幕
+     2. 長文字、保健成分、提醒框可自動換行
+     3. 表格在手機版不再裁切，改成可讀的窄版排列
+  ───────────────────────────────────────────── */
+
+#millyHraApp, #millyHraApp {
+width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: clip;
+}
+
+#millyHraApp {
+margin: 0;
+}
+
+#millyHraApp *, #millyHraApp *::before, #millyHraApp *::after {
+box-sizing: border-box;
+}
+
+#millyHraApp img, #millyHraApp svg, #millyHraApp video, #millyHraApp canvas {
+max-width: 100%;
+    height: auto;
+}
+
+#millyHraApp header.site, #millyHraApp .layout, #millyHraApp .results, #millyHraApp .panel, #millyHraApp .form-panel, #millyHraApp .placeholder, #millyHraApp .summary-grid, #millyHraApp .detail, #millyHraApp .std-panel, #millyHraApp .line-cta, #millyHraApp footer.site {
+width: 100%;
+    max-width: 100%;
+    min-width: 0;
+}
+
+#millyHraApp .panel, #millyHraApp .card, #millyHraApp .sum-card, #millyHraApp .adv-item, #millyHraApp .adv-base, #millyHraApp .adv-note, #millyHraApp .pharm-line, #millyHraApp .placeholder, #millyHraApp .std-summary, #millyHraApp .bmi-note, #millyHraApp .hint, #millyHraApp .lede, #millyHraApp .factor, #millyHraApp .chk, #millyHraApp .ph-step, #millyHraApp .tab-btn, #millyHraApp .badge, #millyHraApp .light {
+max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+#millyHraApp .adv-item .ing, #millyHraApp .pharm-line, #millyHraApp .adv-base, #millyHraApp .std-summary {
+white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+#millyHraApp .adv-item .ing {
+display: block;
+    width: 100%;
+    max-width: 100%;
+    line-height: 1.7;
+}
+
+#millyHraApp .std-scroll {
+width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* ── 電腦版嵌入官網最佳化：維持內容寬度，不讓表單與結果被拉到整個螢幕 ── */
+
+@media (min-width: 901px) {
+#millyHraApp .wrap {
+width: min(1120px, calc(100% - 40px));
+      max-width: 1120px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 0;
+      padding-right: 0;
+}
+
+#millyHraApp .layout {
+display: grid;
+      grid-template-columns: 380px minmax(0, 1fr);
+      gap: 24px;
+      align-items: start;
+}
+
+#millyHraApp .form-panel {
+width: 100%;
+      max-width: 380px;
+}
+
+#millyHraApp .results {
+width: 100%;
+      min-width: 0;
+}
+
+#millyHraApp .placeholder {
+min-height: 280px;
+      padding-top: 36px;
+      padding-bottom: 36px;
+}
+}
+
+@media (max-width: 900px) {
+#millyHraApp .wrap {
+width: 100%;
+      max-width: 100%;
+      padding-left: 14px;
+      padding-right: 14px;
+      padding-bottom: 96px;
+}
+
+#millyHraApp header.site {
+padding-left: 14px;
+      padding-right: 14px;
+      gap: 10px;
+}
+
+#millyHraApp .logo-img {
+max-width: min(260px, 100%);
+      height: auto;
+}
+
+#millyHraApp .brand-tag {
+width: 100%;
+}
+
+#millyHraApp .hero h1 {
+font-size: clamp(24px, 7vw, 30px);
+      line-height: 1.35;
+}
+
+#millyHraApp .hero p.lede {
+max-width: 100%;
+}
+
+#millyHraApp .layout {
+display: block;
+      margin-top: 20px;
+}
+
+#millyHraApp .form-panel, #millyHraApp .detail, #millyHraApp .std-panel, #millyHraApp .placeholder {
+padding-left: 16px;
+      padding-right: 16px;
+}
+
+#millyHraApp .results {
+margin-top: 20px;
+}
+
+#millyHraApp .frow {
+display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+}
+
+#millyHraApp .frow > *, #millyHraApp .frow > .field {
+width: 100%;
+      min-width: 0;
+}
+
+#millyHraApp .seg {
+width: 100%;
+      min-width: 0;
+}
+
+#millyHraApp .seg label {
+min-width: 0;
+      overflow-wrap: anywhere;
+      white-space: normal;
+}
+
+#millyHraApp .summary-grid {
+grid-template-columns: repeat(2, minmax(0, 1fr));
+      padding-left: 16px;
+      padding-right: 16px;
+}
+
+#millyHraApp .meter-row {
+display: block;
+}
+
+#millyHraApp .meter {
+width: 100%;
+      min-width: 0;
+      margin-bottom: 8px;
+}
+
+#millyHraApp .meter-pct {
+min-width: 0;
+}
+
+#millyHraApp .factor {
+display: block;
+}
+
+#millyHraApp .factor .fv {
+display: block;
+      margin-top: 2px;
+}
+
+#millyHraApp .pharm-line {
+display: grid;
+      grid-template-columns: 24px minmax(0, 1fr);
+}
+
+#millyHraApp .light {
+white-space: normal;
+}
+
+#millyHraApp .tabs {
+padding-left: 16px;
+      padding-right: 16px;
+}
+
+#millyHraApp .tab-btn {
+flex: 1 1 calc(50% - 8px);
+      min-width: 0;
+      padding-left: 10px;
+      padding-right: 10px;
+}
+
+#millyHraApp table.std-table {
+width: 100%;
+      min-width: 0;
+      table-layout: fixed;
+      font-size: 12.5px;
+}
+
+#millyHraApp .std-table th, #millyHraApp .std-table td {
+padding-left: 6px;
+      padding-right: 6px;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+}
+
+#millyHraApp .std-table td.note {
+font-size: 11.5px;
+}
+}
+
+@media (max-width: 420px) {
+#millyHraApp .wrap {
+padding-left: 12px;
+      padding-right: 12px;
+}
+
+#millyHraApp header.site {
+padding-left: 12px;
+      padding-right: 12px;
+}
+
+#millyHraApp .form-panel, #millyHraApp .detail, #millyHraApp .std-panel, #millyHraApp .placeholder {
+padding-left: 14px;
+      padding-right: 14px;
+}
+
+#millyHraApp .summary-grid {
+grid-template-columns: 1fr;
+}
+
+#millyHraApp .std-panel h2, #millyHraApp .detail h3 {
+font-size: 18px;
+}
+
+#millyHraApp table.std-table {
+font-size: 12px;
+}
+
+#millyHraApp .std-table th, #millyHraApp .std-table td {
+padding: 7px 4px;
+}
+}
+
+/* ── LOGO 尺寸鎖定：避免被官網主題 CSS 放大 ── */
+#millyHraApp .logo-img {
+  width: auto !important;
+  height: 44px !important;
+  max-width: 210px !important;
+  object-fit: contain !important;
+}
+
+@media (max-width: 900px) {
+  #millyHraApp header.site {
+    align-items: flex-start;
   }
-  @media print {
-    header.site .header-note, button.calc, .pharm-cta a.btn { display: none; }
-    body { background: #fff; }
+  #millyHraApp .logo-img {
+    height: 36px !important;
+    max-width: 180px !important;
   }
+}
+
+@media (max-width: 420px) {
+  #millyHraApp .logo-img {
+    height: 34px !important;
+    max-width: 170px !important;
+  }
+}
+
+
+
 </style>
 
+<div id="millyHraApp">
 <header class="site">
   <img class="logo-img" src="data:image/png;base64,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" alt="米蕾美研生技 Milly International Co.,Ltd.">
   <div class="brand-tag">醫美保健專家｜日本預防醫學</div>
@@ -797,6 +1427,7 @@
 <footer class="site">
   © 米蕾美研生技有限公司｜細節綻放真實之美 · 本頁為健康衛教輔助工具
 </footer>
+</div>
 
 <script>
 (function () {
