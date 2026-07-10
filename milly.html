@@ -38,8 +38,8 @@
 <style>
 
   /* ── 響應式強化：避免手機橫向溢出 ───────────── */
-  html { -webkit-text-size-adjust: 100%; }
-  body { overflow-x: hidden; }
+  html { -webkit-text-size-adjust: 100%; overflow-x: hidden; }
+  body { overflow-x: hidden; min-width: 0; }
   @media (max-width: 560px) {
     .wrap { padding: 0 14px 48px; }
     header.site { padding: 12px 14px; }
