@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta charset="utf-8">
+<title>華信健康風險評估｜藥局保健專家</title>
+<script>
+/* iframe 自動高度：嵌入時將內容高度回報給父頁面，讓 iframe 隨內容伸縮 */
+(function () {
+  if (window.parent === window) return;      // 非 iframe 內則略過
+  function post() {
+    var h = Math.max(document.documentElement.scrollHeight, document.body ? document.body.scrollHeight : 0);
+    window.parent.postMessage({ hraHeight: h }, "*");
+  }
+  window.addEventListener("load", post);
+  window.addEventListener("resize", post);
+  if (window.ResizeObserver) new ResizeObserver(post).observe(document.documentElement);
+  document.addEventListener("click", function () { setTimeout(post, 350); });
+})();
+</script>
+
+<script>
+/* 確保行動裝置正確響應寬度：部分 CMS 貼入內容時會移除 <head> 的 viewport
+   設定，導致手機以桌面寬度渲染。此處於載入時偵測並自動補回。 */
+(function () {
+  try {
+    var m = document.querySelector('meta[name="viewport"]');
+    if (!m) {
+      m = document.createElement("meta");
+      m.name = "viewport";
+      document.head.appendChild(m);
+    }
+    m.setAttribute("content", "width=device-width, initial-scale=1, viewport-fit=cover");
+  } catch (e) {}
+})();
+</script>
+
+<style>
+
+  /* ── 響應式強化：避免手機橫向溢出 ───────────── */
+  html { -webkit-text-size-adjust: 100%; }
+  body { overflow-x: hidden; }
+  @media (max-width: 560px) {
+    .wrap { padding: 0 14px 48px; }
+    header.site { padding: 12px 14px; }
+    .header-note { display: none; }
+    .hero { padding: 28px 0 4px; }
+    .form-panel, .detail, .std-panel { padding-left: 16px; padding-right: 16px; }
+    .summary-grid { padding: 16px; gap: 8px; }
+    /* 三欄血脂等在極窄螢幕改為單欄，避免輸入框過窄 */
+    .frow { flex-wrap: wrap; }
+    .frow > * { flex: 1 1 100%; }
+    .frow > .field { flex: 1 1 100%; }
+  }
+  :root {
+    --green: #1D7A5F;
+    --green-deep: #135845;
+    --green-soft: #E3EFE9;
+    --orange: #E8762D;
+    --orange-soft: #FBEADD;
+    --yellow: #F2B84B;
+    --ink: #1E2B26;
+    --ink-2: #51635B;
+    --ink-3: #7E8D86;
+    --ground: #F6F8F5;
+    --card: #FFFFFF;
+    --line: #DCE5DF;
+    --risk-low: #2E9E6B;
+    --risk-low-bg: #E4F3EB;
+    --risk-mid: #C98A06;
+    --risk-mid-bg: #FBF0D7;
+    --risk-high: #D64545;
+    --risk-high-bg: #FBE5E5;
+    --shadow: 0 1px 3px rgba(30,43,38,.08), 0 8px 24px rgba(30,43,38,.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --green: #4CAF8E;
+      --green-deep: #7ECBB0;
+      --green-soft: #1B2E27;
+      --orange: #F0904F;
+      --orange-soft: #3A2A1C;
+      --yellow: #E5B968;
+      --ink: #E8EEEA;
+      --ink-2: #A9B8B1;
+      --ink-3: #7E8D86;
+      --ground: #101714;
+      --card: #1A231F;
+      --line: #2C3A33;
+      --risk-low: #4FBE8B;
+      --risk-low-bg: #1B3328;
+      --risk-mid: #E0AE45;
+      --risk-mid-bg: #362B14;
+      --risk-high: #E86B6B;
+      --risk-high-bg: #3B2020;
+      --shadow: 0 1px 3px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+    }
+  }
+  :root[data-theme="light"] {
+    --green: #1D7A5F; --green-deep: #135845; --green-soft: #E3EFE9;
+    --orange: #E8762D; --orange-soft: #FBEADD; --yellow: #F2B84B;
+    --ink: #1E2B26; --ink-2: #51635B; --ink-3: #7E8D86;
+    --ground: #F6F8F5; --card: #FFFFFF; --line: #DCE5DF;
+    --risk-low: #2E9E6B; --risk-low-bg: #E4F3EB;
+    --risk-mid: #C98A06; --risk-mid-bg: #FBF0D7;
+    --risk-high: #D64545; --risk-high-bg: #FBE5E5;
+    --shadow: 0 1px 3px rgba(30,43,38,.08), 0 8px 24px rgba(30,43,38,.06);
+  }
+  :root[data-theme="dark"] {
+    --green: #4CAF8E; --green-deep: #7ECBB0; --green-soft: #1B2E27;
+    --orange: #F0904F; --orange-soft: #3A2A1C; --yellow: #E5B968;
+    --ink: #E8EEEA; --ink-2: #A9B8B1; --ink-3: #7E8D86;
+    --ground: #101714; --card: #1A231F; --line: #2C3A33;
+    --risk-low: #4FBE8B; --risk-low-bg: #1B3328;
+    --risk-mid: #E0AE45; --risk-mid-bg: #362B14;
+    --risk-high: #E86B6B; --risk-high-bg: #3B2020;
+    --shadow: 0 1px 3px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", "Segoe UI", system-ui, sans-serif;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px 64px; }
+
+  /* ── 頁首 ─────────────────────────── */
+  header.site {
+    background: var(--card);
+    border-bottom: 3px solid var(--green);
+    padding: 14px 20px;
+    display: flex; align-items: center; gap: 14px;
+    flex-wrap: wrap;
+  }
+  .logo-img {
+    height: 44px; width: auto; display: block;
+    background: #fff; border-radius: 8px; padding: 4px 8px;
+  }
+  .brand-tag { font-size: 12.5px; color: var(--ink-2); letter-spacing: .06em; }
+  header.site .spacer { flex: 1; }
+  .header-note {
+    font-size: 12px; color: var(--ink-3);
+    text-align: right;
+  }
+
+  .hero {
+    padding: 40px 0 8px;
+  }
+  .hero .eyebrow {
+    display: inline-block;
+    font-size: 12.5px; font-weight: 700; letter-spacing: .14em;
+    color: var(--green);
+    background: var(--green-soft);
+    padding: 4px 12px; border-radius: 999px;
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    margin: 0 0 10px;
+    font-size: clamp(26px, 4vw, 36px);
+    font-weight: 800;
+    letter-spacing: .01em;
+    text-wrap: balance;
+    line-height: 1.3;
+  }
+  .hero h1 em { font-style: normal; color: var(--green); }
+  .hero p.lede {
+    margin: 0; max-width: 40em;
+    color: var(--ink-2); font-size: 15.5px;
+  }
+
+  /* ── 主版面 ─────────────────────────── */
+  .layout {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 24px;
+    margin-top: 28px;
+    align-items: start;
+  }
+  .form-panel { position: sticky; top: 16px; }
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    .form-panel { position: static; }
+  }
+
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+  }
+
+  /* ── 表單 ─────────────────────────── */
+  .form-panel { padding: 24px; }
+  .form-panel h2 {
+    margin: 0 0 4px; font-size: 18px; font-weight: 700;
+  }
+  .form-panel .hint { font-size: 13px; color: var(--ink-2); margin: 0 0 18px; }
+
+  .fgroup { margin-bottom: 16px; }
+  .fgroup > label.glabel {
+    display: block; font-size: 13px; font-weight: 700;
+    color: var(--ink-2); margin-bottom: 6px;
+    letter-spacing: .04em;
+  }
+  .frow { display: flex; gap: 10px; }
+  .frow > * { flex: 1; min-width: 0; }
+
+  .field { position: relative; }
+  /* 輸入框＋單位：左右兩格各自獨立，數字永不與單位重疊 */
+  .ibox {
+    display: flex; align-items: center;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    background: var(--ground);
+  }
+  .ibox:focus-within {
+    outline: 2px solid var(--green);
+    outline-offset: 1px;
+    border-color: var(--green);
+  }
+  .field input[type="number"] {
+    flex: 1; min-width: 0;
+    width: 100%;
+    padding: 10px 4px 10px 12px;
+    font-size: 15px;
+    font-variant-numeric: tabular-nums;
+    border: none;
+    background: transparent;
+    color: var(--ink);
+    font-family: inherit;
+    appearance: textfield;
+    -moz-appearance: textfield;
+  }
+  .field input[type="number"]:focus { outline: none; }
+  /* 隱藏數字欄位的上下調整箭頭 */
+  .field input[type="number"]::-webkit-inner-spin-button,
+  .field input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .field .unit {
+    flex: none;
+    padding-right: 10px;
+    font-size: 11.5px; color: var(--ink-3);
+    pointer-events: none;
+    user-select: none;
+  }
+  @media (max-width: 900px) {
+    /* 16px 以上可避免 iOS 點輸入框時自動縮放頁面 */
+    .field input[type="number"] { font-size: 16px; }
+  }
+  .flabel {
+    display: block;
+    min-height: 34px;   /* 兩行高度：欄位名＋標準值，讓同列輸入框對齊 */
+    font-size: 12.5px; color: var(--ink-2);
+    line-height: 1.35;
+    margin-bottom: 4px;
+  }
+  .flabel .std {
+    display: block;
+    font-style: normal; color: var(--green);
+    font-size: 11px; font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .seg {
+    display: flex; border: 1.5px solid var(--line);
+    border-radius: 10px; overflow: hidden;
+  }
+  .seg label {
+    flex: 1; text-align: center; padding: 9px 0;
+    font-size: 14px; cursor: pointer; color: var(--ink-2);
+    background: var(--ground);
+    user-select: none;
+  }
+  .seg input { position: absolute; opacity: 0; }
+  .seg input:checked + label {
+    background: var(--green); color: #fff; font-weight: 700;
+  }
+  .seg input:focus-visible + label { outline: 2px solid var(--orange); outline-offset: -2px; }
+
+  .chk-list { display: flex; flex-direction: column; gap: 8px; }
+  .chk {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 12px;
+    border: 1.5px solid var(--line); border-radius: 10px;
+    background: var(--ground);
+    font-size: 14px; cursor: pointer;
+  }
+  .chk input { width: 17px; height: 17px; accent-color: var(--green); margin: 0; }
+  .chk:has(input:checked) { border-color: var(--green); background: var(--green-soft); }
+
+  .bmi-note {
+    font-size: 12.5px; color: var(--ink-2);
+    background: var(--green-soft);
+    border-radius: 8px; padding: 6px 10px; margin-top: 8px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  button.calc {
+    width: 100%;
+    margin-top: 6px;
+    padding: 14px;
+    font-size: 16px; font-weight: 700; letter-spacing: .08em;
+    font-family: inherit;
+    color: #fff;
+    background: var(--orange);
+    border: none; border-radius: 12px;
+    cursor: pointer;
+    transition: filter .15s;
+  }
+  button.calc:hover { filter: brightness(1.07); }
+  button.calc:focus-visible { outline: 3px solid var(--green); outline-offset: 2px; }
+  .form-err {
+    display: none;
+    margin-top: 10px; padding: 9px 12px;
+    font-size: 13.5px;
+    color: var(--risk-high);
+    background: var(--risk-high-bg);
+    border-radius: 8px;
+  }
+  .form-err.show { display: block; }
+
+  /* ── 結果區 ─────────────────────────── */
+  .results { display: flex; flex-direction: column; gap: 20px; }
+
+  .placeholder {
+    padding: 48px 32px;
+    min-height: 340px;
+    display: grid; place-content: center; justify-items: center;
+    text-align: center;
+    color: var(--ink-2);
+  }
+  .ph-icon {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: var(--green-soft);
+    display: grid; place-items: center;
+    margin-bottom: 18px;
+  }
+  .ph-icon svg { display: block; }
+  .placeholder h2 { margin: 0 0 6px; font-size: 17px; font-weight: 700; color: var(--ink); }
+  .placeholder .ph-sub { margin: 0 0 22px; font-size: 14px; }
+  .ph-steps {
+    display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+  }
+  .ph-step {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; color: var(--ink-2);
+    background: var(--ground);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 7px 14px 7px 8px;
+  }
+  .ph-step .n {
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--green); color: #fff;
+    display: grid; place-items: center;
+    font-size: 11.5px; font-weight: 700;
+    flex: none;
+  }
+
+  .tabs {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    padding: 14px 18px 0;
+  }
+  .tab-btn {
+    padding: 8px 16px;
+    font-size: 14px; font-weight: 600;
+    font-family: inherit;
+    color: var(--ink-2);
+    background: var(--ground);
+    border: 1.5px solid var(--line);
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .tab-btn[aria-selected="true"] {
+    background: var(--green); color: #fff; border-color: var(--green);
+  }
+  .tab-btn:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--line);
+  }
+  .sum-card {
+    border: 1.5px solid var(--line);
+    border-radius: 12px;
+    padding: 12px 12px 11px;
+    cursor: pointer;
+    background: var(--ground);
+    transition: border-color .15s;
+    display: flex; flex-direction: column; gap: 8px;
+    align-items: flex-start; justify-content: space-between;
+  }
+  .sum-card:hover { border-color: var(--green); }
+  .sum-card.active { border-color: var(--green); box-shadow: inset 0 0 0 1px var(--green); }
+  .sum-card .dname { font-size: 13.5px; font-weight: 700; line-height: 1.35; }
+  .sum-card .den { display: block; font-size: 10.5px; font-weight: 400; color: var(--ink-3); letter-spacing: .04em; }
+  .light {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12.5px; font-weight: 700;
+    padding: 3px 10px; border-radius: 999px;
+    white-space: nowrap;   /* 燈號文字不斷行 */
+  }
+  .light .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+  .light.low  { color: var(--risk-low);  background: var(--risk-low-bg); }
+  .light.low .dot  { background: var(--risk-low); }
+  .light.mid  { color: var(--risk-mid);  background: var(--risk-mid-bg); }
+  .light.mid .dot  { background: var(--risk-mid); }
+  .light.high { color: var(--risk-high); background: var(--risk-high-bg); }
+  .light.high .dot { background: var(--risk-high); }
+  .light.na   { color: var(--ink-3); background: var(--ground); border: 1px solid var(--line); }
+  .light.na .dot { background: var(--ink-3); }
+
+  .detail { padding: 6px 24px 26px; }
+  .detail h3 {
+    font-size: 20px; font-weight: 800; margin: 14px 0 2px;
+  }
+  .detail .dsub { font-size: 13px; color: var(--ink-3); margin: 0 0 16px; }
+
+  .meter-row { display: flex; align-items: center; gap: 14px; margin: 6px 0 4px; flex-wrap: wrap; }
+  .meter {
+    flex: 1; min-width: 220px;
+    height: 14px; border-radius: 999px;
+    background: linear-gradient(90deg, var(--risk-low-bg), var(--risk-mid-bg) 55%, var(--risk-high-bg));
+    position: relative;
+    border: 1px solid var(--line);
+  }
+  .meter .fill {
+    position: absolute; inset: 0 auto 0 0;
+    border-radius: 999px;
+    transition: width .5s ease;
+  }
+  .meter .fill.low  { background: var(--risk-low); }
+  .meter .fill.mid  { background: var(--risk-mid); }
+  .meter .fill.high { background: var(--risk-high); }
+  .meter-pct {
+    font-size: 26px; font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    min-width: 3.2em;
+  }
+  .meter-pct small { font-size: 13px; font-weight: 600; color: var(--ink-3); }
+  .meter-cap { font-size: 12.5px; color: var(--ink-3); margin: 2px 0 18px; }
+
+  .factors h4, .advice h4 {
+    font-size: 14px; font-weight: 700; letter-spacing: .08em;
+    color: var(--green);
+    margin: 20px 0 10px;
+    text-transform: uppercase;
+  }
+  .factor {
+    display: flex; justify-content: space-between; gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--line);
+    font-size: 14px;
+  }
+  .factor:last-child { border-bottom: none; }
+  .factor .fv { font-variant-numeric: tabular-nums; font-weight: 600; }
+  .factor .fv.warn { color: var(--risk-mid); }
+  .factor .fv.bad  { color: var(--risk-high); }
+  .factor .fv.ok   { color: var(--risk-low); }
+
+  .advice ul { margin: 0; padding-left: 20px; font-size: 14.5px; color: var(--ink-2); }
+  .advice li { margin-bottom: 6px; }
+  .advice li strong { color: var(--ink); }
+
+  .adv-item {
+    border-left: 3px solid var(--yellow);
+    background: var(--ground);
+    border-radius: 0 10px 10px 0;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+  .adv-item .t { font-weight: 700; margin-bottom: 3px; }
+  .adv-item .t .tv { color: var(--risk-high); }
+  .adv-item .life { color: var(--ink-2); margin-bottom: 6px; }
+  .adv-item .ing {
+    font-size: 13px; color: var(--green-deep);
+    background: var(--green-soft);
+    border-radius: 7px; padding: 5px 10px;
+    display: inline-block;
+  }
+  .adv-item.good { border-left-color: var(--risk-low); }
+  .adv-base {
+    font-size: 14px; color: var(--ink-2);
+    padding: 10px 14px; margin-bottom: 10px;
+    background: var(--ground); border-radius: 10px;
+  }
+  .adv-note {
+    font-size: 12px; color: var(--ink-3); margin-top: 12px;
+  }
+  .pharm-line {
+    display: flex; gap: 10px; align-items: flex-start;
+    margin-top: 14px; padding: 12px 14px;
+    background: var(--orange-soft);
+    border-radius: 10px;
+    font-size: 13.5px; color: var(--ink-2);
+  }
+  .pharm-line .pb {
+    flex: none; width: 24px; height: 24px; border-radius: 50%;
+    background: var(--orange); color: #fff;
+    display: grid; place-items: center;
+    font-size: 12px; font-weight: 800;
+  }
+  .pharm-line strong { color: var(--ink); }
+
+  /* ── 標準值對照表 ─────────────────────────── */
+  .std-panel { padding: 22px 24px 24px; }
+  .std-panel h2 { margin: 0 0 4px; font-size: 18px; font-weight: 700; }
+  .std-panel .hint { font-size: 13px; color: var(--ink-2); margin: 0 0 14px; }
+  .std-scroll { overflow-x: auto; }
+  table.std-table {
+    width: 100%; border-collapse: collapse;
+    font-size: 14px; min-width: 480px;
+  }
+  .std-table th {
+    text-align: left; font-size: 12.5px; font-weight: 700;
+    letter-spacing: .06em; color: var(--ink-2);
+    padding: 8px 10px;
+    border-bottom: 2px solid var(--line);
+    white-space: nowrap;
+  }
+  .std-table td {
+    padding: 9px 10px;
+    border-bottom: 1px solid var(--line);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .std-table tr:last-child td { border-bottom: none; }
+  .std-table td.val { font-weight: 700; }
+  .std-table td.val.over { color: var(--risk-high); }
+  .std-table td.std-v { color: var(--ink-2); }
+  .std-table td.note { color: var(--ink-3); font-size: 12px; white-space: normal; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 12.5px; font-weight: 700;
+    padding: 2px 10px; border-radius: 999px;
+  }
+  .badge.pass { color: var(--risk-low); background: var(--risk-low-bg); }
+  .badge.fail { color: var(--risk-high); background: var(--risk-high-bg); }
+  .badge.na   { color: var(--ink-3); background: var(--ground); border: 1px solid var(--line); }
+  .std-summary {
+    margin-top: 14px;
+    font-size: 13.5px; color: var(--ink-2);
+    background: var(--green-soft);
+    border-radius: 10px; padding: 10px 14px;
+  }
+  .std-summary strong { color: var(--green-deep); }
+
+  /* ── LINE CTA ─────────────────────────── */
+  .line-cta { margin-top: 4px; text-align: center; }
+  .line-btn {
+    display: inline-flex; align-items: center; gap: 9px;
+    padding: 13px 32px;
+    background: #06C755; color: #fff;
+    font-weight: 700; font-size: 15.5px;
+    border-radius: 999px; text-decoration: none;
+    letter-spacing: .05em;
+    box-shadow: var(--shadow);
+    transition: filter .15s;
+  }
+  .line-btn:hover { filter: brightness(1.06); }
+  .line-btn:focus-visible { outline: 3px solid var(--green); outline-offset: 2px; }
+
+  /* ── 免責 ─────────────────────────── */
+  .disclaimer {
+    margin-top: 28px;
+    font-size: 12.5px; color: var(--ink-3);
+    border-top: 1px solid var(--line);
+    padding-top: 16px;
+  }
+  .disclaimer strong { color: var(--ink-2); }
+  .disclaimer ol { padding-left: 18px; margin: 8px 0 0; }
+  .disclaimer li { margin-bottom: 4px; }
+
+  footer.site {
+    margin-top: 8px;
+    padding: 20px;
+    text-align: center;
+    font-size: 12.5px; color: var(--ink-3);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .meter .fill { transition: none; }
+  }
+  @media print {
+    header.site .header-note, button.calc, .pharm-cta a.btn { display: none; }
+    body { background: #fff; }
+  }
+</style>
+
+<header class="site">
+  <img class="logo-img" src="data:image/png;base64,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" alt="華信國際醫藥 Hua Xin International Co.,Ltd.">
+  <div class="brand-tag">藥局保健專家｜日本保健食品推薦</div>
+  <div class="spacer"></div>
+  <div class="header-note">藥局夥伴專用工具<br>可列印評估結果給顧客</div>
+</header>
+
+<div class="wrap">
+  <section class="hero">
+    <span class="eyebrow">慢性疾病風險自我檢測</span>
+    <h1>拿出健檢報告，<em>3 分鐘</em>算出您的慢性病風險燈號</h1>
+    <p class="lede">輸入年齡、血壓、血糖、血脂、腎功能等健檢數值，即可評估冠心病、腦中風、糖尿病、高血壓、心血管事件與腎臟病六大慢性病風險，並獲得個人化生活保健指引。適用 35–70 歲，其他年齡層結果僅供參考。</p>
+  </section>
+
+  <div class="layout">
+    <!-- ══ 左：輸入表單 ══ -->
+    <form class="panel form-panel" id="hraForm" novalidate>
+      <h2>健檢數值輸入</h2>
+      <p class="hint">數值可在您的健檢報告或成人預防保健（成健）報告中找到。所有欄位皆為選填——填多少、算多少，未填的項目會自動略過。</p>
+
+      <div class="fgroup">
+        <label class="glabel">基本資料</label>
+        <div class="frow">
+          <div class="field">
+            <span class="flabel">年齡（35–70）</span>
+            <div class="ibox"><input type="number" id="age" min="20" max="99"><span class="unit">歲</span></div>
+          </div>
+          <div>
+            <span class="flabel">生理性別</span>
+            <div class="seg" role="radiogroup" aria-label="生理性別">
+              <input type="radio" name="sex" id="sexM" value="m" checked>
+              <label for="sexM">男</label>
+              <input type="radio" name="sex" id="sexF" value="f">
+              <label for="sexF">女</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fgroup">
+        <label class="glabel">身體組成</label>
+        <div class="frow">
+          <div class="field">
+            <span class="flabel">身高</span>
+            <div class="ibox"><input type="number" id="height" min="100" max="220"><span class="unit">cm</span></div>
+          </div>
+          <div class="field">
+            <span class="flabel">體重</span>
+            <div class="ibox"><input type="number" id="weight" min="30" max="200"><span class="unit">kg</span></div>
+          </div>
+          <div class="field">
+            <span class="flabel">腰圍 <span class="std" id="waistStd">標準 &lt;90</span></span>
+            <div class="ibox"><input type="number" id="waist" min="40" max="200"><span class="unit">cm</span></div>
+          </div>
+        </div>
+        <div class="bmi-note" id="bmiNote">BMI 將自動計算</div>
+      </div>
+
+      <div class="fgroup">
+        <label class="glabel">血壓</label>
+        <div class="frow">
+          <div class="field">
+            <span class="flabel">收縮壓 <span class="std">標準 &lt;120</span></span>
+            <div class="ibox"><input type="number" id="sbp" min="70" max="260"><span class="unit">mmHg</span></div>
+          </div>
+          <div class="field">
+            <span class="flabel">舒張壓 <span class="std">標準 &lt;80</span></span>
+            <div class="ibox"><input type="number" id="dbp" min="40" max="160"><span class="unit">mmHg</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fgroup">
+        <label class="glabel">血糖與血脂</label>
+        <div class="frow">
+          <div class="field">
+            <span class="flabel">空腹血糖 <span class="std">標準 &lt;100</span></span>
+            <div class="ibox"><input type="number" id="glu" min="40" max="500"><span class="unit">mg/dL</span></div>
+          </div>
+          <div class="field">
+            <span class="flabel">總膽固醇 <span class="std">標準 &lt;200</span></span>
+            <div class="ibox"><input type="number" id="tc" min="80" max="500"><span class="unit">mg/dL</span></div>
+          </div>
+        </div>
+        <div class="frow" style="margin-top:10px;">
+          <div class="field">
+            <span class="flabel">高密度 HDL <span class="std" id="hdlStd">標準 &gt;40</span></span>
+            <div class="ibox"><input type="number" id="hdl" min="10" max="150"><span class="unit">mg/dL</span></div>
+          </div>
+          <div class="field">
+            <span class="flabel">低密度 LDL <span class="std">標準 &lt;130</span></span>
+            <div class="ibox"><input type="number" id="ldl" min="20" max="400"><span class="unit">mg/dL</span></div>
+          </div>
+          <div class="field">
+            <span class="flabel">三酸甘油酯 <span class="std">標準 &lt;150</span></span>
+            <div class="ibox"><input type="number" id="tg" min="20" max="1000"><span class="unit">mg/dL</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fgroup">
+        <label class="glabel">腎臟功能</label>
+        <div class="frow">
+          <div class="field">
+            <span class="flabel">腎絲球過濾率 eGFR <span class="std">標準 ≥60</span></span>
+            <div class="ibox"><input type="number" id="egfr" min="1" max="200"><span class="unit">mL/min</span></div>
+          </div>
+          <div class="field">
+            <span class="flabel">肌酸酐 <span class="std" id="creStd">標準 &lt;1.3</span></span>
+            <div class="ibox"><input type="number" id="cre" min="0.1" max="20" step="0.01"><span class="unit">mg/dL</span></div>
+          </div>
+        </div>
+        <div class="frow" style="margin-top:10px;">
+          <div>
+            <span class="flabel">蛋白尿 <span class="std">標準 陰性</span></span>
+            <div class="seg" role="radiogroup" aria-label="蛋白尿">
+              <input type="radio" name="prot" id="protNA" value="na" checked>
+              <label for="protNA">未檢驗</label>
+              <input type="radio" name="prot" id="protNeg" value="neg">
+              <label for="protNeg">陰性</label>
+              <input type="radio" name="prot" id="protPos" value="pos">
+              <label for="protPos">陽性</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fgroup">
+        <label class="glabel">生活習慣與病史</label>
+        <div class="chk-list">
+          <label class="chk"><input type="checkbox" id="smoke">目前有吸菸習慣</label>
+          <label class="chk"><input type="checkbox" id="hasDM">已確診糖尿病</label>
+          <label class="chk"><input type="checkbox" id="hasHTN">已確診高血壓</label>
+        </div>
+      </div>
+
+      <button type="submit" class="calc">開始評估風險</button>
+      <div class="form-err" id="formErr" role="alert"></div>
+    </form>
+
+    <!-- ══ 右：結果 ══ -->
+    <div class="results">
+      <div class="panel placeholder" id="placeholder">
+        <div class="ph-icon" aria-hidden="true">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 31s-12-7.2-12-15.6C6 10.4 9.6 7 14 7c1.8 0 3.2.7 4 1.8C18.8 7.7 20.2 7 22 7c4.4 0 8 3.4 8 8.4C30 23.8 18 31 18 31Z" stroke="var(--green)" stroke-width="2.4" stroke-linejoin="round"/>
+            <path d="M7 19h6l2.4-5 3.6 8 2.4-4.5H29" stroke="var(--orange)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h2>您的健康風險報告將顯示在這裡</h2>
+        <p class="ph-sub">完成評估後，可查看六大慢性病風險燈號、標準值對照與個人化保健指引。</p>
+        <div class="ph-steps">
+          <span class="ph-step"><span class="n">1</span>拿出健檢報告</span>
+          <span class="ph-step"><span class="n">2</span>輸入健檢數值</span>
+          <span class="ph-step"><span class="n">3</span>查看燈號與指引</span>
+        </div>
+      </div>
+
+      <div class="panel" id="resultPanel" hidden>
+        <div class="summary-grid" id="summaryGrid" role="tablist" aria-label="疾病風險總覽"></div>
+        <div class="detail" id="detail" role="tabpanel"></div>
+      </div>
+
+      <div class="panel std-panel" id="stdPanel" hidden>
+        <h2>健檢數值 × 建議標準對照</h2>
+        <p class="hint">逐項比對您的數值與建議標準，紅色為未達標項目，建議優先改善並諮詢藥師。</p>
+        <div class="std-scroll">
+          <table class="std-table">
+            <thead>
+              <tr><th>檢查項目</th><th>您的數值</th><th>建議標準</th><th>判定</th><th>說明</th></tr>
+            </thead>
+            <tbody id="stdBody"></tbody>
+          </table>
+        </div>
+        <div class="std-summary" id="stdSummary"></div>
+      </div>
+
+      <div class="line-cta" id="ctaBox" hidden>
+        <a class="line-btn" href="https://lin.ee/URnLQ3i" target="_blank" rel="noopener">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2C6.48 2 2 5.66 2 10.17c0 4.04 3.58 7.42 8.42 8.06.33.07.78.22.9.5.1.26.07.66.03.92l-.14.87c-.05.26-.21 1.02.9.56 1.1-.47 5.93-3.5 8.09-5.98C21.7 13.42 22 11.86 22 10.17 22 5.66 17.52 2 12 2Z"/></svg>
+          加入華信官方 LINE
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="disclaimer">
+    <strong>使用須知與免責聲明</strong>
+    <ol>
+      <li>本工具為健康風險「參考性」自我評估，採用簡化的風險因子計分示意模型，<strong>非醫療診斷</strong>，亦不能取代醫師、藥師之專業判斷。</li>
+      <li>適用年齡為 35–70 歲，其他年齡層結果僅供參考。若已確診相關疾病，請遵循醫囑治療，勿以本結果自行調整用藥。</li>
+      <li>本工具不會儲存或上傳您輸入的任何健康資料，所有計算皆在您的裝置上完成。</li>
+    </ol>
+  </div>
+</div>
+
+<footer class="site">
+  © 華信國際醫藥股份有限公司｜藥局保健專家 · 本頁為藥局衛教輔助工具
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ─────────────────────────────────────────────
+     簡化示意計分模型（DEMO）
+     每個疾病由風險因子加權計分，映射為示意風險％與燈號。
+     正式上線前，應替換為經醫學驗證之模型（如國健署授權模型
+     或 Framingham 等公開模型），此處僅示範資料流與呈現。
+  ────────────────────────────────────────────── */
+
+  var DISEASES = [
+    { id: "chd",    name: "冠心病",       en: "CHD" },
+    { id: "stroke", name: "腦中風",       en: "Stroke" },
+    { id: "dm",     name: "糖尿病",       en: "Diabetes" },
+    { id: "htn",    name: "高血壓",       en: "Hypertension" },
+    { id: "mace",   name: "心血管不良事件", en: "MACE" },
+    { id: "ckd",    name: "腎臟病",       en: "CKD" }
+  ];
+
+  /* ── 各疾病的基礎生活方針（永遠顯示一條）── */
+  var BASE_GUIDE = {
+    chd:    "冠心病防治核心：每週至少 150 分鐘中等強度有氧運動（快走、游泳、騎車），並以魚類、堅果等好油取代飽和脂肪。",
+    stroke: "腦中風防治核心：血壓穩定是關鍵——每天固定時間量血壓並記錄，避免熬夜與過度飲酒。",
+    dm:     "糖尿病防治核心：體重減少 5–7% 即可顯著降低發生風險；以全穀類取代精緻澱粉、戒含糖飲料。",
+    htn:    "高血壓防治核心：得舒飲食（DASH）——多蔬果、低脂乳品、全穀類，每日鈉攝取控制在 2400 mg（約 6 g 鹽）內。",
+    mace:   "心血管事件防治核心：血壓、血脂、血糖「三高」需一起管理，40 歲以上善用成人預防保健定期追蹤。",
+    ckd:    "腎臟病防治核心：控制血壓與血糖是護腎根本；避免長期使用消炎止痛藥，維持每日充足飲水，定期驗尿與抽血追蹤腎功能。"
+  };
+
+  /* ── 各疾病固定的藥師提醒（用藥安全）── */
+  var PHARM_NOTE = {
+    chd:    "服用降血脂或心臟用藥者，補充任何保健成分前，請先請藥師確認交互作用。",
+    stroke: "已服用抗凝血藥（如阿斯匹靈、抗血栓藥）者，補充魚油、納豆激酶、銀杏前務必諮詢藥師。",
+    dm:     "血糖相關保健成分可能與降血糖藥產生加乘作用，服藥中請先由藥師評估再使用。",
+    htn:    "部分感冒藥與消炎止痛藥可能使血壓上升，到藥局購買前請主動告知藥師您的血壓狀況。",
+    mace:   "多重用藥者建議定期到藥局做用藥整合評估，避免重複用藥或交互作用。",
+    ckd:    "腎功能不佳者，許多藥物與保健品的劑量都需要調整；購買任何成藥或保健品前，請主動告知藥師您的腎功能數值。"
+  };
+
+  /* ── 風險因子 → 個人化建議規則 ──
+     依當事人實際超標的項目觸發；ing 僅列成分方向，
+     不提及任何產品名稱，一律引導與藥師討論。 */
+  var RULES = [
+    {
+      when: function (d) { return d.sbp >= 120 || d.dbp >= 80; },
+      title: function (d) { return "血壓 <span class='tv'>" + d.sbp + "/" + d.dbp + " mmHg</span>（標準 <120/80）"; },
+      life: "減鹽是第一步：少沾醬、少加工食品、湯喝一半。養成早晚各量一次血壓的習慣，就醫時把記錄帶給醫師。",
+      ing: "納豆激酶、芹菜與橄欖葉萃取；若屬壓力型血壓（睡不好、易緊繃），可另與藥師討論 GABA、酸棗仁",
+      dis: ["htn", "stroke", "mace", "chd", "ckd"]
+    },
+    {
+      when: function (d) { return d.glu >= 100; },
+      title: function (d) { return "空腹血糖 <span class='tv'>" + d.glu + " mg/dL</span>（標準 <100" + (d.glu >= 126 ? "，已達糖尿病診斷範圍，請盡速就醫確認" : "，屬糖尿病前期") + "）"; },
+      life: "改變進食順序（先菜 → 再肉 → 最後飯）、戒含糖飲料，飯後散步 15 分鐘就能有感降低飯後血糖。",
+      ing: "苦瓜胜肽、肉桂萃取、武靴葉",
+      dis: ["dm", "mace", "chd", "stroke", "ckd"]
+    },
+    {
+      when: function (d) { return d.tc >= 200 || d.ldl >= 130; },
+      title: function (d) {
+        var parts = [];
+        if (d.tc >= 200) parts.push("總膽固醇 <span class='tv'>" + d.tc + "</span>（標準 <200）");
+        if (d.ldl >= 130) parts.push("LDL <span class='tv'>" + d.ldl + "</span>（標準 <130）");
+        return parts.join("、");
+      },
+      life: "減少飽和脂肪（肥肉、奶油、炸物、糕點），每週吃 2–3 次深海魚，早餐可改燕麥增加水溶性纖維。",
+      ing: "紅麴、高濃度 Omega-3 魚油（EPA/DHA）、輔酵素 Q10",
+      dis: ["chd", "mace", "stroke"]
+    },
+    {
+      when: function (d) { return d.tg >= 150; },
+      title: function (d) { return "三酸甘油酯 <span class='tv'>" + d.tg + " mg/dL</span>（標準 <150）"; },
+      life: "三酸甘油酯對「酒精＋含糖飲料」最敏感，先戒這兩樣，多數人 1–3 個月就能看到明顯改善。",
+      ing: "高濃度 EPA 魚油（Omega-3）；常應酬飲酒者可另與藥師討論薑黃素等護肝成分",
+      dis: ["chd", "mace", "dm", "stroke"]
+    },
+    {
+      when: function (d) { return d.hdl <= (d.sex === "m" ? 40 : 50); },
+      title: function (d) { return "好膽固醇 HDL <span class='tv'>" + d.hdl + " mg/dL</span>（標準：男 >40、女 >50）"; },
+      life: "提升 HDL 最有效的方法是規律有氧運動，每週 150 分鐘快走即可見效；戒菸也能讓 HDL 回升。",
+      ing: "Omega-3 魚油（搭配運動效果更好）",
+      dis: ["chd", "mace"]
+    },
+    {
+      when: function (d) { return d.bmi >= 24 || d.waist >= (d.sex === "m" ? 90 : 80); },
+      title: function (d) {
+        var parts = [];
+        if (d.bmi >= 24) parts.push("BMI <span class='tv'>" + d.bmi + "</span>（標準 <24）");
+        if (d.waist >= (d.sex === "m" ? 90 : 80)) parts.push("腰圍 <span class='tv'>" + d.waist + " cm</span>（標準：男 <90、女 <80）");
+        return parts.join("、");
+      },
+      life: "先以減重 5% 為目標（而非追求標準體重），控制份量吃到七分飽、晚餐提早吃，比激烈節食更能持久。",
+      ing: "綜合蔬果酵素、益生菌（腸道順暢與代謝輔助）",
+      dis: ["dm", "htn", "mace", "chd", "stroke"]
+    },
+    {
+      when: function (d) { return d.smoke; },
+      title: function () { return "目前有<span class='tv'>吸菸</span>習慣"; },
+      life: "戒菸是降低所有慢性病風險 CP 值最高的一件事——戒菸一年，冠心病風險即可降低約一半。可洽社區藥局的戒菸諮詢服務。",
+      ing: "戒菸期間可與藥師討論抗氧化成分（茶多酚、薑黃素、SOD 類）輔助身體修復",
+      dis: ["chd", "stroke", "dm", "htn", "mace", "ckd"]
+    },
+    {
+      when: function (d) { return (d.sbp >= 120 || d.tc >= 200 || d.ldl >= 130) && d.age >= 50; },
+      title: function (d) { return "年齡 " + d.age + " 歲＋血壓/血脂偏高：血管循環保養期"; },
+      life: "血管彈性隨年齡下降，除三高控制外，避免久坐——每坐 1 小時起身活動 5 分鐘。",
+      ing: "精胺酸（促進循環）、納豆激酶、輔酵素 Q10",
+      dis: ["stroke", "mace"]
+    },
+    {
+      when: function (d) { return d.hasDM || d.glu >= 126; },
+      title: function () { return "血糖已達糖尿病範圍：留意周邊神經保養"; },
+      life: "規律用藥與回診最重要；若出現手腳麻刺感，是周邊神經病變的早期警訊，請主動告知醫師或藥師。",
+      ing: "活性維生素 B 群（神經修復保養）",
+      dis: ["dm"]
+    },
+    {
+      when: function (d) {
+        return (d.egfr > 0 && d.egfr < 60) ||
+               (d.cre > 0 && d.cre >= (d.sex === "m" ? 1.3 : 1.1)) ||
+               d.prot === "pos";
+      },
+      title: function (d) {
+        var parts = [];
+        if (d.egfr > 0 && d.egfr < 60) parts.push("eGFR <span class='tv'>" + d.egfr + "</span>（標準 ≥60）");
+        if (d.cre > 0 && d.cre >= (d.sex === "m" ? 1.3 : 1.1)) parts.push("肌酸酐 <span class='tv'>" + d.cre + "</span>（標準：男 <1.3、女 <1.1）");
+        if (d.prot === "pos") parts.push("蛋白尿<span class='tv'>陽性</span>");
+        return "腎功能指標異常：" + parts.join("、");
+      },
+      life: "控制血壓與血糖是保護腎臟的根本；避免長期自行服用消炎止痛藥與來路不明的藥草偏方，維持充足飲水，並定期回診追蹤腎功能。",
+      ing: "腎臟保健益生菌、芹菜與橄欖葉萃取、杜仲葉萃取",
+      dis: ["ckd", "htn", "dm", "mace"]
+    }
+  ];
+
+  /* 各因子取得 0–3 分；未填寫的欄位回傳 null，不列入計算 */
+  function scoreFactors(d) {
+    var f = {};
+    function add(name, g) { if (g) f[name] = g; }
+    add("年齡", grade(d.age, [45, 55, 65], "歲"));
+    add("BMI", grade(d.bmi, [24, 27, 30], ""));
+    add("腰圍", grade(d.waist, d.sex === "m" ? [90, 95, 100] : [80, 85, 90], "cm"));
+    add("收縮壓", grade(d.sbp, [120, 130, 140], "mmHg"));
+    add("空腹血糖", grade(d.glu, [100, 110, 126], "mg/dL"));
+    add("總膽固醇", grade(d.tc, [200, 220, 240], "mg/dL"));
+    add("低密度膽固醇 LDL", grade(d.ldl, [130, 160, 190], "mg/dL"));
+    add("三酸甘油酯", grade(d.tg, [150, 200, 500], "mg/dL"));
+    add("高密度膽固醇 HDL", gradeLow(d.hdl, d.sex === "m" ? 40 : 50, "mg/dL"));
+    add("腎絲球過濾率 eGFR", gradeEgfr(d.egfr));
+    add("肌酸酐", grade(d.cre, d.sex === "m" ? [1.3, 1.5, 2.0] : [1.1, 1.3, 1.8], "mg/dL"));
+    if (d.prot !== "na") {
+      f["蛋白尿"] = d.prot === "pos"
+        ? { v: "陽性", pts: 3, cls: "bad" }
+        : { v: "陰性", pts: 0, cls: "ok" };
+    }
+    f["吸菸"] = d.smoke ? { v: "有", pts: 3, cls: "bad" } : { v: "無", pts: 0, cls: "ok" };
+    return f;
+  }
+
+  /* eGFR 越低越差：≥90 正常、60–89 輕度、45–59 中度、<45 重度 */
+  function gradeEgfr(v) {
+    if (!(v > 0)) return null;
+    var pts = v < 45 ? 3 : v < 60 ? 2 : v < 90 ? 1 : 0;
+    return { v: v + " mL/min", pts: pts, cls: pts >= 2 ? "bad" : pts === 1 ? "warn" : "ok" };
+  }
+
+  function grade(v, cuts, unit) {
+    if (!(v > 0)) return null;
+    var pts = v >= cuts[2] ? 3 : v >= cuts[1] ? 2 : v >= cuts[0] ? 1 : 0;
+    return { v: v + (unit ? " " + unit : ""), pts: pts, cls: pts >= 2 ? "bad" : pts === 1 ? "warn" : "ok" };
+  }
+  function gradeLow(v, cut, unit) {
+    if (!(v > 0)) return null;
+    var pts = v < cut ? 2 : 0;
+    return { v: v + " " + unit, pts: pts, cls: pts ? "bad" : "ok" };
+  }
+
+  /* 各疾病對因子的權重（示意） */
+  var WEIGHTS = {
+    chd:    { "年齡": 1.2, "總膽固醇": 1.4, "低密度膽固醇 LDL": 1.5, "高密度膽固醇 HDL": 1.2, "收縮壓": 1.0, "吸菸": 1.5, "空腹血糖": 0.8, "BMI": 0.6, "腰圍": 0.6, "三酸甘油酯": 0.8 },
+    stroke: { "年齡": 1.4, "收縮壓": 1.8, "吸菸": 1.2, "空腹血糖": 0.9, "總膽固醇": 0.7, "低密度膽固醇 LDL": 0.7, "高密度膽固醇 HDL": 0.5, "BMI": 0.6, "腰圍": 0.6, "三酸甘油酯": 0.6 },
+    dm:     { "空腹血糖": 2.0, "BMI": 1.4, "腰圍": 1.4, "三酸甘油酯": 1.0, "高密度膽固醇 HDL": 0.8, "年齡": 0.8, "收縮壓": 0.6, "總膽固醇": 0.4, "低密度膽固醇 LDL": 0.4, "吸菸": 0.6 },
+    htn:    { "收縮壓": 2.0, "BMI": 1.2, "腰圍": 1.2, "年齡": 1.0, "吸菸": 0.6, "空腹血糖": 0.6, "三酸甘油酯": 0.6, "總膽固醇": 0.4, "低密度膽固醇 LDL": 0.4, "高密度膽固醇 HDL": 0.4 },
+    mace:   { "年齡": 1.3, "收縮壓": 1.3, "總膽固醇": 1.0, "低密度膽固醇 LDL": 1.1, "高密度膽固醇 HDL": 0.9, "吸菸": 1.4, "空腹血糖": 1.0, "BMI": 0.7, "腰圍": 0.7, "三酸甘油酯": 0.8 },
+    ckd:    { "腎絲球過濾率 eGFR": 2.0, "肌酸酐": 1.6, "蛋白尿": 1.8, "收縮壓": 1.2, "空腹血糖": 1.2, "年齡": 0.8, "BMI": 0.6, "腰圍": 0.6, "三酸甘油酯": 0.4, "總膽固醇": 0.3, "低密度膽固醇 LDL": 0.3, "高密度膽固醇 HDL": 0.3, "吸菸": 0.6 }
+    };
+
+  function assess(d) {
+    var factors = scoreFactors(d);
+    return DISEASES.map(function (dis) {
+      /* 已確診者不評估該疾病的「發生」風險 */
+      if ((dis.id === "dm" && d.hasDM) || (dis.id === "htn" && d.hasHTN)) {
+        return { dis: dis, diagnosed: true, factors: factors };
+      }
+      var w = WEIGHTS[dis.id], sum = 0, max = 0, filledCount = 0;
+      for (var k in w) {
+        if (!factors[k]) continue;   /* 未填寫的因子不列入計算 */
+        if (k !== "吸菸") filledCount++;
+        sum += factors[k].pts * w[k];
+        max += 3 * w[k];
+      }
+      /* 有效數值太少時不勉強評估，避免誤導 */
+      if (filledCount < 3) {
+        return { dis: dis, nodata: true, factors: factors };
+      }
+      /* 已確診之共病提高其他疾病風險 */
+      if (d.hasDM && dis.id !== "dm") sum += max * 0.12;
+      if (d.hasHTN && dis.id !== "htn") sum += max * 0.10;
+      var ratio = Math.min(sum / max, 1);
+      var pct = Math.round(ratio * 45 * 10) / 10;  /* 映射至 0–45% 示意區間 */
+      var lv = ratio < 0.25 ? "low" : ratio < 0.5 ? "mid" : "high";
+      return { dis: dis, pct: pct, ratio: ratio, level: lv, factors: factors };
+    });
+  }
+
+  var LEVEL_TXT = { low: "低風險", mid: "中風險", high: "高風險" };
+
+  /* ── DOM ── */
+  var $ = function (id) { return document.getElementById(id); };
+  var results = null, activeTab = "chd", lastD = null;
+
+  function num(id) { return parseFloat($(id).value); }
+
+  /* ── 建議標準（腰圍/HDL 依性別，建議體重依身高 BMI<24 換算）── */
+  function standards(d) {
+    var male = d.sex === "m";
+    var hasH = d.h > 0;
+    var wLimit = hasH ? Math.floor(24 * d.h * d.h) : null;  /* 建議體重上限 */
+    return [
+      { name: "收縮壓",   v: d.sbp,    std: "<120", unit: "mmHg",  pass: d.sbp < 120,  note: "120–129 屬血壓偏高、130 以上請就醫評估" },
+      { name: "舒張壓",   v: d.dbp,    std: "<80",  unit: "mmHg",  pass: d.dbp < 80,   note: "與收縮壓任一超標即需注意" },
+      { name: "空腹血糖", v: d.glu,    std: "<100", unit: "mg/dL", pass: d.glu < 100,  note: "100–125 屬糖尿病前期" },
+      { name: "總膽固醇", v: d.tc,     std: "<200", unit: "mg/dL", pass: d.tc < 200,   note: "200–239 為邊緣偏高" },
+      { name: "三酸甘油酯", v: d.tg,   std: "<150", unit: "mg/dL", pass: d.tg < 150,   note: "超標常與飲食、飲酒相關" },
+      { name: "高密度膽固醇 HDL", v: d.hdl, std: male ? ">40" : ">50", unit: "mg/dL",
+        pass: d.hdl > (male ? 40 : 50), note: "好膽固醇，越高越好（男 >40、女 >50）" },
+      { name: "低密度膽固醇 LDL", v: d.ldl, std: "<130", unit: "mg/dL", pass: d.ldl < 130, note: "壞膽固醇，130–159 為邊緣偏高" },
+      { name: "建議體重", v: d.weight, std: wLimit ? "<" + wLimit : "—", unit: "kg",
+        filled: hasH && d.weight > 0,
+        pass: d.weight < wLimit, note: "依您的身高以 BMI <24 換算" + (hasH ? "" : "（需填身高）") },
+      { name: "腰圍",     v: d.waist,  std: male ? "<90" : "<80", unit: "cm",
+        pass: d.waist < (male ? 90 : 80), note: "反映內臟脂肪（男 <90、女 <80）" },
+      { name: "腎絲球過濾率 eGFR", v: d.egfr, std: "≥60", unit: "mL/min",
+        pass: d.egfr >= 60, note: "≥90 為正常、60–89 輕度下降、<60 建議腎臟科追蹤" },
+      { name: "肌酸酐",   v: d.cre,    std: male ? "<1.3" : "<1.1", unit: "mg/dL",
+        pass: d.cre < (male ? 1.3 : 1.1), note: "反映腎臟過濾功能（男 <1.3、女 <1.1）" },
+      { name: "蛋白尿",   v: d.prot === "pos" ? "陽性" : "陰性", unit: "",
+        filled: d.prot !== "na", std: "陰性",
+        pass: d.prot === "neg", note: "陽性可能是腎臟受損的早期訊號，建議複檢" }
+    ];
+  }
+
+  function renderStandards(d) {
+    var rows = standards(d);
+    var tb = $("stdBody");
+    tb.innerHTML = "";
+    var failCount = 0, filledCount = 0, skipCount = 0;
+    rows.forEach(function (r) {
+      var filled = (r.filled === undefined) ? (r.v > 0) : r.filled;
+      var tr = document.createElement("tr");
+      if (!filled) {
+        skipCount++;
+        tr.innerHTML =
+          "<td>" + r.name + "</td>" +
+          '<td class="val" style="color:var(--ink-3);font-weight:400;">—</td>' +
+          '<td class="std-v">' + r.std + (r.unit ? " " + r.unit : "") + "</td>" +
+          '<td><span class="badge na">未填寫</span></td>' +
+          '<td class="note">' + r.note + "</td>";
+      } else {
+        filledCount++;
+        if (!r.pass) failCount++;
+        tr.innerHTML =
+          "<td>" + r.name + "</td>" +
+          '<td class="val' + (r.pass ? "" : " over") + '">' + r.v + (r.unit ? " " + r.unit : "") + "</td>" +
+          '<td class="std-v">' + r.std + (r.unit ? " " + r.unit : "") + "</td>" +
+          '<td><span class="badge ' + (r.pass ? 'pass">✓ 達標' : 'fail">✗ 未達標') + "</span></td>" +
+          '<td class="note">' + r.note + "</td>";
+      }
+      tb.appendChild(tr);
+    });
+    var s = $("stdSummary");
+    var skipTxt = skipCount ? "另有 " + skipCount + " 項未填寫，補上可獲得更完整的評估。" : "";
+    if (failCount === 0) {
+      s.innerHTML = "🎉 <strong>已填寫的 " + filledCount + " 項全數達標！</strong>請繼續維持良好生活習慣，並定期健檢追蹤。" + skipTxt;
+    } else {
+      s.innerHTML = "已填寫 " + filledCount + " 項中，共 <strong>" + failCount + " 項未達標</strong>。未達標項目與上方風險燈號密切相關，建議帶著這份對照表到藥局，由藥師協助您規劃改善順序。" + skipTxt;
+    }
+  }
+
+  /* 性別切換時，同步表單上的腰圍 / HDL 標準提示 */
+  function updSexStd() {
+    var male = $("sexM").checked;
+    $("waistStd").innerHTML = male ? "標準 &lt;90" : "標準 &lt;80";
+    $("hdlStd").innerHTML = male ? "標準 &gt;40" : "標準 &gt;50";
+    $("creStd").innerHTML = male ? "標準 &lt;1.3" : "標準 &lt;1.1";
+  }
+  $("sexM").addEventListener("change", updSexStd);
+  $("sexF").addEventListener("change", updSexStd);
+
+  $("height").addEventListener("input", updBMI);
+  $("weight").addEventListener("input", updBMI);
+  function updBMI() {
+    var h = num("height") / 100, w = num("weight");
+    if (h > 0 && w > 0) {
+      var bmi = w / (h * h);
+      $("bmiNote").textContent = "BMI = " + bmi.toFixed(1) +
+        (bmi >= 27 ? "（肥胖）" : bmi >= 24 ? "（過重）" : bmi >= 18.5 ? "（正常）" : "（過輕）");
+    } else {
+      $("bmiNote").textContent = "BMI 將自動計算";
+    }
+  }
+
+  $("hraForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var numeric = ["age", "height", "weight", "waist", "sbp", "dbp", "glu", "tc", "hdl", "ldl", "tg", "egfr", "cre"];
+    var filled = numeric.filter(function (id) { return num(id) > 0; });
+    var err = $("formErr");
+    if (filled.length === 0) {
+      err.textContent = "請至少輸入一項健檢數值再進行評估。";
+      err.classList.add("show");
+      return;
+    }
+    err.classList.remove("show");
+
+    var h = num("height") / 100;
+    var w = num("weight");
+    var d = {
+      age: num("age"), sex: $("sexF").checked ? "f" : "m",
+      h: h, weight: w,
+      bmi: (h > 0 && w > 0) ? Math.round(w / (h * h) * 10) / 10 : NaN,
+      waist: num("waist"), sbp: num("sbp"), dbp: num("dbp"),
+      glu: num("glu"), tc: num("tc"), hdl: num("hdl"), ldl: num("ldl"), tg: num("tg"),
+      egfr: num("egfr"), cre: num("cre"),
+      prot: $("protPos").checked ? "pos" : ($("protNeg").checked ? "neg" : "na"),
+      smoke: $("smoke").checked, hasDM: $("hasDM").checked, hasHTN: $("hasHTN").checked
+    };
+    lastD = d;
+    results = assess(d);
+    $("placeholder").hidden = true;
+    $("resultPanel").hidden = false;
+    $("stdPanel").hidden = false;
+    $("ctaBox").hidden = false;
+    renderSummary();
+    renderDetail();
+    renderStandards(d);
+    $("resultPanel").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
+  function renderSummary() {
+    var g = $("summaryGrid");
+    g.innerHTML = "";
+    results.forEach(function (r) {
+      var card = document.createElement("div");
+      card.className = "sum-card" + (r.dis.id === activeTab ? " active" : "");
+      card.setAttribute("role", "tab");
+      card.setAttribute("tabindex", "0");
+      card.setAttribute("aria-selected", r.dis.id === activeTab ? "true" : "false");
+      var lightHtml = r.diagnosed
+        ? '<span class="light mid"><span class="dot"></span>已確診</span>'
+        : r.nodata
+          ? '<span class="light na"><span class="dot"></span>資料不足</span>'
+          : '<span class="light ' + r.level + '"><span class="dot"></span>' + LEVEL_TXT[r.level] + "</span>";
+      card.innerHTML = '<div class="dname">' + r.dis.name + '<span class="den">' + r.dis.en + "</span></div>" + lightHtml;
+      card.addEventListener("click", function () { activeTab = r.dis.id; renderSummary(); renderDetail(); });
+      card.addEventListener("keydown", function (ev) {
+        if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); activeTab = r.dis.id; renderSummary(); renderDetail(); }
+      });
+      g.appendChild(card);
+    });
+  }
+
+  function renderDetail() {
+    var r = null;
+    for (var i = 0; i < results.length; i++) if (results[i].dis.id === activeTab) r = results[i];
+    if (!r) return;
+    var el = $("detail"), html = "";
+
+    html += "<h3>" + r.dis.name + "風險</h3>";
+    if (r.diagnosed) {
+      html += '<p class="dsub">您已勾選確診' + r.dis.name + '，故不評估發生風險。請遵循醫囑規律治療與回診，並可參考下方生活指引輔助控制。</p>';
+    } else if (r.nodata) {
+      html += '<p class="dsub">與' + r.dis.name + '相關的健檢數值填寫不足（至少需 3 項），暫不計算風險以免誤導。補上更多數值即可評估。</p>';
+    } else {
+      html += '<p class="dsub">依您輸入的數值計算之示意風險（10 年內發生風險．示意值）</p>';
+      html += '<div class="meter-row">' +
+        '<div class="meter" role="img" aria-label="風險 ' + r.pct + '%，' + LEVEL_TXT[r.level] + '">' +
+        '<div class="fill ' + r.level + '" style="width:' + Math.max(r.ratio * 100, 4) + '%"></div></div>' +
+        '<div class="meter-pct">' + r.pct + '<small>%</small></div></div>';
+      html += '<p class="meter-cap">燈號分級：綠燈＝低風險、黃燈＝中風險、紅燈＝高風險</p>';
+    }
+
+    html += '<div class="factors"><h4>您的風險因子</h4>';
+    for (var k in r.factors) {
+      var f = r.factors[k];
+      html += '<div class="factor"><span>' + k + '</span><span class="fv ' + f.cls + '">' + f.v + "</span></div>";
+    }
+    html += "</div>";
+
+    /* ── 依個人風險因子動態產生指引 ── */
+    html += '<div class="advice"><h4>個人化保健指引</h4>';
+    html += '<div class="adv-base">📌 ' + BASE_GUIDE[r.dis.id] + "</div>";
+
+    var hits = RULES.filter(function (rule) {
+      return rule.dis.indexOf(r.dis.id) !== -1 && rule.when(lastD);
+    });
+    if (hits.length === 0 && r.nodata) {
+      html += '<div class="adv-item"><div class="t">尚無足夠數值產生個人化建議</div>' +
+        '<div class="life">補上更多健檢數值後，這裡會依您的超標項目給出對應的生活調整與保健成分方向。</div></div>';
+    } else if (hits.length === 0) {
+      html += '<div class="adv-item good"><div class="t">與' + r.dis.name +
+        '相關的數值大多在標準內，表現很好！</div><div class="life">維持目前的生活型態，並定期健檢追蹤即可。</div>' +
+        '<span class="ing">💊 日常保健成分：綜合維生素與礦物質、Omega-3 等基礎成分</span></div>';
+    } else {
+      hits.forEach(function (rule) {
+        html += '<div class="adv-item"><div class="t">' + rule.title(lastD) + "</div>" +
+          '<div class="life">' + rule.life + "</div>" +
+          '<span class="ing">💊 保健成分：' + rule.ing + "</span></div>";
+      });
+    }
+
+    html += '<div class="pharm-line"><span class="pb">藥</span><span><strong>用藥安全提醒：</strong>' +
+      PHARM_NOTE[r.dis.id] + "</span></div>";
+    html += '<p class="adv-note">以上成分建議為保健方向參考，非療效宣稱；實際適不適合您，請由藥師依您的用藥與健康狀況評估。</p>';
+    html += "</div>";
+
+    el.innerHTML = html;
+  }
+})();
+</script>
+
+</html>
